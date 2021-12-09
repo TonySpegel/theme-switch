@@ -1,22 +1,66 @@
 <!DOCTYPE html>
 
 <html>
-  <head>
-    <meta charset="utf-8" />
-    <title>&lt;theme-switch> Demo</title>
-    <script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
-    <script src="../node_modules/lit/polyfill-support.js"></script>
-    <script type="module" src="../theme-switch.js"></script>
-    <style>
-      p {
-        border: solid 1px blue;
-        padding: 8px;
-      }
-    </style>
-  </head>
-  <body>
-    <theme-switch>
-      <p>This is child content</p>
-    </theme-switch>
-  </body>
+    <head>
+        <meta charset="utf-8" />
+        <title>&lt;theme-switch> Demo</title>
+        <script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+        <script src="../node_modules/lit/polyfill-support.js"></script>
+        <script type="module" src="../theme-switch.js"></script>
+        <style>
+            * {
+                --base-gap: 16px;
+                --base-radius: 8px;
+            }
+
+            body {
+                display: grid;
+                grid-template-rows: auto 1fr auto;
+                margin: 0;
+                height: 100vh;
+            }
+
+            header {
+                display: flex;
+                justify-content: flex-end;
+            }
+
+            main {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            header,
+            footer {
+                padding: var(--base-gap);
+            }
+
+            img {
+                width: 70%;
+            }
+
+            /**
+             * Styling Slots:
+             */
+            p {
+                border: solid 1px blue;
+                padding: 8px;
+            }
+        </style>
+    </head>
+    <body>
+        <header>
+            <theme-switch>
+                <p>This is child content</p>
+                <button>Test</button>
+            </theme-switch>
+        </header>
+        <main>
+            <img src="./img/beluga.jpg" alt="Hvaldimir is hungry" />
+        </main>
+        <footer>
+            <span>Impressum</span>
+        </footer>
+    </body>
 </html>
