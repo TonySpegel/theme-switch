@@ -1,20 +1,20 @@
 ---
 layout: example.11ty.cjs
-title: <my-element> ⌲ Examples ⌲ Basic
+title: <theme-switch> ⌲ Examples ⌲ Basic
 tags: example
 name: Basic
 description: A basic example
 ---
 
 <style>
-  my-element p {
+  theme-switch p {
     border: solid 1px blue;
     padding: 8px;
   }
 </style>
-<my-element>
+<theme-switch>
   <p>This is child content</p>
-</my-element>
+</theme-switch>
 
 <h3>CSS</h3>
 
@@ -28,7 +28,7 @@ p {
 <h3>HTML</h3>
 
 ```html
-<my-element>
+<theme-switch>
   <p>This is child content</p>
-</my-element>
+</theme-switch>
 ```

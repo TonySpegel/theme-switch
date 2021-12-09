@@ -3,7 +3,7 @@ node_modules/
 /test/
 custom-elements.json
 # top level source
-my-element.js
-my-element.js.map
-my-element.d.ts
-my-element.d.ts.map
+theme-switch.js
+theme-switch.js.map
+theme-switch.d.ts
+theme-switch.d.ts.map
