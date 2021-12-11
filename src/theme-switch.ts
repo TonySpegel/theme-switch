@@ -5,27 +5,33 @@
  */
 
 import {LitElement, html, css} from 'lit';
-import {customElement, property, state} from 'lit/decorators.js';
+import {customElement, queryAll, state} from 'lit/decorators.js';
 
-// const savePreference = (theme: string): void => {
-//     localStorage.setItem('theme-preference', theme);
-// };
+interface themeState {
+    title: string;
+    active: boolean;
+}
 
 /**
  * Custom element which helps switching themes.
- *
- * @fires count-changed - Indicates when the count changes
- * @slot - This element has a slot
- * @csspart button - The button
  */
 @customElement('theme-switch')
 export class ThemeSwitch extends LitElement {
     static override styles = css`
+        @keyframes gradient {
+            0% {
+                background-position: 3% 50%;
+            }
+            50% {
+                background-position: 97% 50%;
+            }
+            100% {
+                background-position: 3% 50%;
+            }
+        }
+
         :host {
             display: block;
-            border: solid 1px gray;
-            padding: calc(var(--base-gap));
-            min-width: 340px;
 
             --base-gap: 8px;
             --base-radius: 8px;
@@ -33,77 +39,150 @@ export class ThemeSwitch extends LitElement {
 
         #btn-theme-selection {
             border-radius: 50%;
+            border: 2px solid hsla(281, 53%, 97%, 0.63);
             width: 25px;
             aspect-ratio: 1;
 
-            color: var(--color, var(--color));
+            cursor: pointer;
+
+            background: linear-gradient(
+                -45deg,
+                hsla(281, 55%, 74%, 1),
+                hsl(191, 98%, 56%),
+                hsl(281, 60%, 25%),
+                hsl(338, 78%, 48%)
+            );
+
+            background-size: 400% 400%;
+            animation: gradient 10s ease infinite;
         }
 
         #dialog-theme-selection {
             border: 1px solid darkorchid;
             border-radius: var(--base-radius);
             padding: var(--base-gap);
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            background-color: lightsteelblue;
         }
 
         #dialog-theme-selection[aria-hidden='true'] {
             display: none;
         }
+
+        h2 {
+            margin-top: 0;
+        }
+
+        .dialog-actions {
+            padding: var(--base-gap) 0;
+        }
+
+        button[aria-pressed='true'] {
+            background-color: red;
+        }
     `;
 
-    /**
-     * The name to say "Hello" to.
-     */
-    @property({type: String})
-    name = 'World';
-
-    /**
-     * The number of times the button has been clicked.
-     */
-    @property({type: Number})
-    count = 0;
+    @state()
+    private dialogHidden = false;
+    @queryAll('button[role="radio"]')
+    _themeButtons!: HTMLButtonElement[];
 
     @state()
-    private dialogHidden = true;
+    private themes: themeState[] = [
+        {
+            title: 'light',
+            active: false,
+        },
+        {
+            title: 'light',
+            active: false,
+        },
+    ];
+
+    constructor() {
+        super();
+        this.clicker.bind(this);
+    }
+
+    private toggle() {
+        this.dialogHidden = !this.dialogHidden;
+        if (this.dialogHidden) {
+            document.querySelector('body')?.classList.remove('dialog-open');
+        } else {
+            document.querySelector('body')?.classList.add('dialog-open');
+        }
+    }
+
+    private clicker(event: Event): void {
+        const {target} = event;
+
+        if (target !== null) {
+            const buttonElement = target as HTMLButtonElement;
+
+            if (buttonElement.getAttribute('role') === 'radio') {
+                buttonElement.setAttribute('tabindex', '0');
+            }
+        }
+    }
+
+    private resetRadioButtonStates(): void {
+        const states = this.themes;
+        states.map((state) => (state.active = false));
+        this.themes = states;
+    }
+
+    private manageRadioButton(i: number, active: boolean): void {
+        this.resetRadioButtonStates();
+        const states = this.themes;
+        states[i].active = active;
+
+        this.themes = states;
+    }
 
     override render() {
         return html`
-            <!-- <h1>${this.sayHello(this.name)}!</h1>
-            <button @click=${this._onClick} part="button">
-                Click Count: ${this.count}
-            </button> -->
-
             <button
-                @click=${() => (this.dialogHidden = !this.dialogHidden)}
-                aria-label="Theme-Auswahl öffnen"
+                @click=${() => this.toggle()}
+                aria-label="open theme-selection"
                 id="btn-theme-selection"
-                title="Theme-Auswahl öffnen"
+                title="open theme-Selection"
             ></button>
             <div
                 aria-hidden="${this.dialogHidden}"
-                aria-label="Theme-Auswahl"
+                aria-label="Theme-Selection"
                 aria-modal="true"
                 id="dialog-theme-selection"
                 role="dialog"
             >
-                <input type="radio" name="themes" value="day" />
-                <input type="radio" name="themes" value="night" />
-                <span>Dialog Content</span>
+                <div class="dialog-title">
+                    <h2>Theme Selection</h2>
+                </div>
+
+                <div role="radiogroup">
+                    ${this.themes.map(
+                        (theme, index) => html`
+                            <button
+                                @click="${() =>
+                                    this.manageRadioButton(index, true)}"
+                                aria-pressed="${theme.active}"
+                                role="radio"
+                                tabindex=${theme.active ? '0' : '-1'}
+                            >
+                                ${theme.title}
+                            </button>
+                        `
+                    )}
+                </div>
+
+                <div class="dialog-actions">
+                    <button @click=${() => this.toggle()}>Close</button>
+                </div>
             </div>
             <!-- <slot></slot> -->
         `;
-    }
-
-    private _onClick() {
-        this.count++;
-        this.dispatchEvent(new CustomEvent('count-changed'));
-    }
-
-    /**
-     * Formats a greeting
-     * @param name The name to say "Hello" to
-     */
-    sayHello(name: string): string {
-        return `Hello, ${name}`;
     }
 }
 
