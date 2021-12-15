@@ -66,6 +66,7 @@
 
             .wrapper {
                 display: flex;
+                align-items: center;
                 gap: var(--base-gap);
             }
 
@@ -83,23 +84,12 @@
             img {
                 width: 70%;
             }
-
-            /**
-             * Styling Slots:
-             */
-            p {
-                border: solid 1px blue;
-                padding: 8px;
-            }
         </style>
     </head>
     <body>
         <header>
             <div class="wrapper">
-                <theme-switch arr='["auto", "light", "dark"]'>
-                    <p>This is child content</p>
-                    <button>Test</button>
-                </theme-switch>
+                <theme-switch arr='["auto", "light", "dark"]'></theme-switch>
                 <a href="/">Blog</a>
             </div>
         </header>
