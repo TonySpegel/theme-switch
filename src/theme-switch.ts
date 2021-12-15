@@ -4,10 +4,11 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-import {LitElement, html, css} from 'lit';
-import {customElement, queryAll, state} from 'lit/decorators.js';
+import {LitElement, css, html} from 'lit';
+import {customElement, property, queryAll, state} from 'lit/decorators.js';
+import {styleMap} from 'lit/directives/style-map.js';
 
-interface themeState {
+interface themeStateInterface {
     title: string;
     active: boolean;
 }
@@ -18,6 +19,9 @@ interface themeState {
 @customElement('theme-switch')
 export class ThemeSwitch extends LitElement {
     static override styles = css`
+        /**
+         * Animations
+         */
         @keyframes gradient {
             0% {
                 background-position: 3% 50%;
@@ -32,11 +36,14 @@ export class ThemeSwitch extends LitElement {
 
         :host {
             display: block;
+            font-family: Sans-Serif;
 
             --base-gap: 8px;
             --base-radius: 8px;
         }
-
+        /**
+         * Button which opens the dialog
+         */
         #btn-theme-selection {
             border-radius: 50%;
             border: 2px solid hsla(281, 53%, 97%, 0.63);
@@ -56,16 +63,24 @@ export class ThemeSwitch extends LitElement {
             background-size: 400% 400%;
             animation: gradient 10s ease infinite;
         }
-
+        /**
+         * Dialog
+         */
         #dialog-theme-selection {
-            border: 1px solid darkorchid;
-            border-radius: var(--base-radius);
-            padding: var(--base-gap);
             position: absolute;
             left: 50%;
             top: 50%;
+
+            width: 200px;
+
+            border: 3px solid var(--surface-1);
+            border-radius: var(--base-radius);
+            padding: var(--base-gap);
             transform: translate(-50%, -50%);
-            background-color: lightsteelblue;
+
+            background-color: white;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19),
+                0 6px 6px rgba(0, 0, 0, 0.23);
         }
 
         #dialog-theme-selection[aria-hidden='true'] {
@@ -80,34 +95,107 @@ export class ThemeSwitch extends LitElement {
             padding: var(--base-gap) 0;
         }
 
-        button[aria-pressed='true'] {
-            background-color: red;
+        .themes {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
+            gap: var(--base-gap);
+        }
+
+        .theme-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: calc(var(--base-gap) / 2);
+            padding: calc(var(--base-gap) / 2);
+        }
+
+        .theme-wrapper > label {
+            text-transform: capitalize;
+        }
+
+        .theme {
+            border-radius: 50%;
+            border: 2px solid hsla(281, 53%, 97%, 0.63);
+            width: 25px;
+            aspect-ratio: 1;
+
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+            transition-duration: 0.15s;
+            cursor: pointer;
+        }
+
+        .theme[aria-checked='true'] {
+            background-color: currentColor;
+        }
+
+        .circle-wrapper {
+            display: grid;
+            place-items: center;
+            grid-template-areas: 'circle';
+            width: 100%;
+            max-width: 40px;
+            aspect-ratio: 1;
+        }
+
+        .inner-circle {
+            grid-area: circle;
+            z-index: 1;
+        }
+
+        .outer-circle {
+            grid-area: circle;
+            z-index: 0;
+
+            border-radius: 50%;
+            width: 50%;
+            aspect-ratio: 1;
+
+            /* background-color: hsl(var(--color), calc(var(--l) + 35%), 100%); */
+            transition: transform 0.4s cubic-bezier(0.54, 1.5, 0.38, 1.2);
+        }
+
+        .radio {
+            cursor: pointer;
+            border-radius: 50%;
+            width: 50%;
+            aspect-ratio: 1;
+
+            border: 2px solid var(--that-color);
+
+            transition: transform 0.4s cubic-bezier(0.54, 1.5, 0.38, 1.2);
+            outline: none;
+        }
+
+        .radio:hover + .outer-circle,
+        .radio:focus + .outer-circle {
+            transform: scale(2);
         }
     `;
 
-    @state()
-    private dialogHidden = false;
+    /**
+     * Decorators
+     * ==============================
+     */
     @queryAll('button[role="radio"]')
     _themeButtons!: HTMLButtonElement[];
+    /**
+     * States ✨
+     * ===============
+     */
+    @state()
+    private dialogHidden = false;
 
     @state()
-    private themes: themeState[] = [
-        {
-            title: 'light',
-            active: false,
-        },
-        {
-            title: 'light',
-            active: false,
-        },
+    themes: themeStateInterface[] = [
+        {title: 'auto', active: true},
+        {title: 'day', active: false},
+        {title: 'night', active: false},
     ];
 
-    constructor() {
-        super();
-        this.clicker.bind(this);
-    }
+    @property({type: Array})
+    arr = [];
 
-    private toggle() {
+    private toggleDialog() {
         this.dialogHidden = !this.dialogHidden;
         if (this.dialogHidden) {
             document.querySelector('body')?.classList.remove('dialog-open');
@@ -116,36 +204,53 @@ export class ThemeSwitch extends LitElement {
         }
     }
 
-    private clicker(event: Event): void {
-        const {target} = event;
+    /**
+     * WIP: needs some work
+     * @param title
+     */
+    // private updateTheme(title: string): void {
+    //     const objIndex = this.themes.findIndex((obj) => obj.title === title);
 
-        if (target !== null) {
-            const buttonElement = target as HTMLButtonElement;
+    //     const themesCopy = [...this.themes];
 
-            if (buttonElement.getAttribute('role') === 'radio') {
-                buttonElement.setAttribute('tabindex', '0');
-            }
-        }
+    //     themesCopy.map((obj) => (obj.active = false));
+
+    //     themesCopy[objIndex] = {
+    //         ...themesCopy[objIndex],
+    //         active: true,
+    //     };
+
+    //     this.themes = themesCopy;
+    // }
+
+    private updateViaIndex(index: number): void {
+        const themesCopy = [...this.themes];
+        themesCopy.forEach((theme) => (theme.active = false));
+        themesCopy[index].active = true;
+
+        this.themes = themesCopy;
     }
 
-    private resetRadioButtonStates(): void {
-        const states = this.themes;
-        states.map((state) => (state.active = false));
-        this.themes = states;
+    // WIP for onKeyDown
+    direction(event: KeyboardEvent) {
+        const key = event.key;
+        console.log(event.type);
+
+        if (key === 'ArrowLeft' || key === 'ArrowUp') return 'previous';
+        if (key === 'ArrowRight' || key === 'ArrowDown') return 'next';
+
+        return '';
     }
 
-    private manageRadioButton(i: number, active: boolean): void {
-        this.resetRadioButtonStates();
-        const states = this.themes;
-        states[i].active = active;
-
-        this.themes = states;
+    private getKeyCode(event: KeyboardEvent): void {
+        const dir = this.direction(event);
+        console.log(dir);
     }
 
     override render() {
         return html`
             <button
-                @click=${() => this.toggle()}
+                @click=${this.toggleDialog}
                 aria-label="open theme-selection"
                 id="btn-theme-selection"
                 title="open theme-Selection"
@@ -157,31 +262,54 @@ export class ThemeSwitch extends LitElement {
                 id="dialog-theme-selection"
                 role="dialog"
             >
-                <div class="dialog-title">
+                <!-- <div class="dialog-title">
                     <h2>Theme Selection</h2>
-                </div>
+                </div> -->
 
-                <div role="radiogroup">
-                    ${this.themes.map(
-                        (theme, index) => html`
-                            <button
-                                @click="${() =>
-                                    this.manageRadioButton(index, true)}"
-                                aria-pressed="${theme.active}"
-                                role="radio"
-                                tabindex=${theme.active ? '0' : '-1'}
-                            >
-                                ${theme.title}
-                            </button>
-                        `
-                    )}
+                <div role="radiogroup" class="themes">
+                    ${this.themes.map((theme, index) => {
+                        const innerCircleStyles = {
+                            backgroundColor: theme.active
+                                ? `var(--surface-1-${theme.title}, #ccc)`
+                                : '',
+                            borderColor: `var(--surface-1-${theme.title}, #ccc)`,
+                        };
+
+                        // const outerCircleStyle = {};
+
+                        return html`
+                            <div class="theme-wrapper">
+                                <div class="circle-wrapper">
+                                    <button
+                                        @click="${() =>
+                                            this.updateViaIndex(index)}"
+                                        @keydown="${this.getKeyCode}"
+                                        aria-checked="${theme.active}"
+                                        class="radio inner-circle"
+                                        id="${theme.title}"
+                                        role="radio"
+                                        style=${styleMap(innerCircleStyles)}
+                                        tabindex=${theme.active ? 0 : 0}
+                                        title="${theme.title}"
+                                    ></button>
+                                    <div
+                                        class="outer-circle"
+                                        style="background-color: hsla(var(--hue-${theme.title}), var(--sat-${theme.title}), calc(var(--lum-${theme.title}) + 35%));"
+                                    ></div>
+                                </div>
+
+                                <label for="${theme.title}">
+                                    ${theme.title}
+                                </label>
+                            </div>
+                        `;
+                    })}
                 </div>
 
                 <div class="dialog-actions">
-                    <button @click=${() => this.toggle()}>Close</button>
+                    <button @click=${() => this.toggleDialog()}>Close</button>
                 </div>
             </div>
-            <!-- <slot></slot> -->
         `;
     }
 }
