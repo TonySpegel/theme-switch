@@ -234,17 +234,24 @@ export class ThemeSwitch extends LitElement {
     // WIP for onKeyDown
     direction(event: KeyboardEvent) {
         const key = event.key;
-        console.log(event.type);
 
-        if (key === 'ArrowLeft' || key === 'ArrowUp') return 'previous';
-        if (key === 'ArrowRight' || key === 'ArrowDown') return 'next';
+        switch (key) {
+            case 'ArrowLeft':
+            case 'ArrowUp':
+                console.log('previous');
+                break;
+            case 'ArrowRight':
+            case 'ArrowDown':
+                console.log('next');
+                break;
+            case 'Enter':
+                console.log('Enter');
+                break;
+            default:
+                break;
+        }
 
         return '';
-    }
-
-    private getKeyCode(event: KeyboardEvent): void {
-        const dir = this.direction(event);
-        console.log(dir);
     }
 
     override render() {
@@ -283,7 +290,7 @@ export class ThemeSwitch extends LitElement {
                                     <button
                                         @click="${() =>
                                             this.updateViaIndex(index)}"
-                                        @keydown="${this.getKeyCode}"
+                                        @keydown="${this.direction}"
                                         aria-checked="${theme.active}"
                                         class="radio inner-circle"
                                         id="${theme.title}"
