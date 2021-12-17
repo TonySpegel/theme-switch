@@ -5,12 +5,12 @@
  */
 
 import {LitElement, css, html} from 'lit';
-import {customElement, property, queryAll, state} from 'lit/decorators.js';
+import {customElement, queryAll, state} from 'lit/decorators.js';
 import {styleMap} from 'lit/directives/style-map.js';
 
 interface themeStateInterface {
     title: string;
-    active: boolean;
+    checked: boolean;
 }
 
 /**
@@ -75,12 +75,14 @@ export class ThemeSwitch extends LitElement {
 
             border: 3px solid var(--surface-1);
             border-radius: var(--base-radius);
-            padding: var(--base-gap);
+            padding: calc(var(--base-gap) * 2);
             transform: translate(-50%, -50%);
 
             background-color: white;
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19),
                 0 6px 6px rgba(0, 0, 0, 0.23);
+
+            text-align: center;
         }
 
         #dialog-theme-selection[aria-hidden='true'] {
@@ -89,6 +91,7 @@ export class ThemeSwitch extends LitElement {
 
         h2 {
             margin-top: 0;
+            color: hsla(281, 100%, 21%, 1);
         }
 
         .dialog-actions {
@@ -105,8 +108,13 @@ export class ThemeSwitch extends LitElement {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: calc(var(--base-gap) / 2);
+            gap: calc(var(--base-gap) / 4);
             padding: calc(var(--base-gap) / 2);
+            border-radius: var(--base-radius);
+
+            background-color: '#f9f9f9';
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16),
+                0 3px 6px rgba(0, 0, 0, 0.23);
         }
 
         .theme-wrapper > label {
@@ -157,7 +165,7 @@ export class ThemeSwitch extends LitElement {
         .radio {
             cursor: pointer;
             border-radius: 50%;
-            width: 50%;
+            width: 60%;
             aspect-ratio: 1;
 
             border: 2px solid var(--that-color);
@@ -177,7 +185,7 @@ export class ThemeSwitch extends LitElement {
      * ==============================
      */
     @queryAll('button[role="radio"]')
-    _themeButtons!: HTMLButtonElement[];
+    private themeButtons!: HTMLButtonElement[];
     /**
      * States ✨
      * ===============
@@ -186,14 +194,19 @@ export class ThemeSwitch extends LitElement {
     private dialogHidden = false;
 
     @state()
-    themes: themeStateInterface[] = [
-        {title: 'auto', active: true},
-        {title: 'day', active: false},
-        {title: 'night', active: false},
+    private themes: themeStateInterface[] = [
+        {title: 'auto', checked: true},
+        {title: 'day', checked: false},
+        {title: 'night', checked: false},
+        {title: 'ocean', checked: false},
     ];
 
-    @property({type: Array})
-    arr = [];
+    private lastIndex: number = this.themes.length - 1;
+
+    /**
+     * Methods ✨
+     * ===============
+     */
 
     private toggleDialog() {
         this.dialogHidden = !this.dialogHidden;
@@ -204,48 +217,37 @@ export class ThemeSwitch extends LitElement {
         }
     }
 
-    /**
-     * WIP: needs some work
-     * @param title
-     */
-    // private updateTheme(title: string): void {
-    //     const objIndex = this.themes.findIndex((obj) => obj.title === title);
-
-    //     const themesCopy = [...this.themes];
-
-    //     themesCopy.map((obj) => (obj.active = false));
-
-    //     themesCopy[objIndex] = {
-    //         ...themesCopy[objIndex],
-    //         active: true,
-    //     };
-
-    //     this.themes = themesCopy;
-    // }
-
     private updateViaIndex(index: number): void {
         const themesCopy = [...this.themes];
-        themesCopy.forEach((theme) => (theme.active = false));
-        themesCopy[index].active = true;
+        themesCopy.forEach((theme) => (theme.checked = false));
+        themesCopy[index].checked = true;
 
         this.themes = themesCopy;
     }
 
     // WIP for onKeyDown
-    direction(event: KeyboardEvent) {
+    private handleKeyboard(event: KeyboardEvent, currentIndex: number) {
         const key = event.key;
 
         switch (key) {
             case 'ArrowLeft':
             case 'ArrowUp':
-                console.log('previous');
+                if (currentIndex !== 0) {
+                    this.themeButtons[currentIndex - 1].focus();
+                } else {
+                    this.themeButtons[this.lastIndex].focus();
+                }
                 break;
             case 'ArrowRight':
             case 'ArrowDown':
-                console.log('next');
+                if (currentIndex !== this.lastIndex) {
+                    this.themeButtons[currentIndex + 1].focus();
+                } else {
+                    this.themeButtons[0].focus();
+                }
                 break;
             case 'Enter':
-                console.log('Enter');
+                this.updateViaIndex(currentIndex);
                 break;
             default:
                 break;
@@ -268,21 +270,29 @@ export class ThemeSwitch extends LitElement {
                 aria-modal="true"
                 id="dialog-theme-selection"
                 role="dialog"
+                tabindex="-1"
             >
-                <!-- <div class="dialog-title">
-                    <h2>Theme Selection</h2>
-                </div> -->
+                <div class="dialog-title">
+                    <h2>Farbschema</h2>
+                </div>
 
                 <div role="radiogroup" class="themes">
                     ${this.themes.map((theme, index) => {
                         const innerCircleStyles = {
-                            backgroundColor: theme.active
+                            backgroundColor: theme.checked
                                 ? `var(--surface-1-${theme.title}, #ccc)`
                                 : '',
                             borderColor: `var(--surface-1-${theme.title}, #ccc)`,
                         };
 
-                        // const outerCircleStyle = {};
+                        const outerCircleStyle = {
+                            backgroundColor: `hsla(
+                                var(--hue-${theme.title}, 0deg), 
+                                var(--sat-${theme.title}, 0%), 
+                                calc(var(--lum-${theme.title}, 62%) + 25%),
+                                0.5
+                            )`,
+                        };
 
                         return html`
                             <div class="theme-wrapper">
@@ -290,24 +300,23 @@ export class ThemeSwitch extends LitElement {
                                     <button
                                         @click="${() =>
                                             this.updateViaIndex(index)}"
-                                        @keydown="${this.direction}"
-                                        aria-checked="${theme.active}"
+                                        @keydown="${(event: KeyboardEvent) =>
+                                            this.handleKeyboard(event, index)}"
+                                        aria-checked="${theme.checked}"
                                         class="radio inner-circle"
                                         id="${theme.title}"
                                         role="radio"
                                         style=${styleMap(innerCircleStyles)}
-                                        tabindex=${theme.active ? 0 : 0}
+                                        tabindex=${theme.checked ? 0 : -1}
                                         title="${theme.title}"
                                     ></button>
                                     <div
                                         class="outer-circle"
-                                        style="background-color: hsla(var(--hue-${theme.title}), var(--sat-${theme.title}), calc(var(--lum-${theme.title}) + 35%));"
+                                        style=${styleMap(outerCircleStyle)}
                                     ></div>
                                 </div>
 
-                                <label for="${theme.title}">
-                                    ${theme.title}
-                                </label>
+                                <label>${theme.title}</label>
                             </div>
                         `;
                     })}
