@@ -16,8 +16,8 @@
 
                 --that-color: hsl(120, 61%, 50%);
 
-                --hue: 120;
-                --sat: 61%;
+                /* --hue: 120; */
+                /* --sat: 61%; */
                 --color: 120, 61%;
                 --l: 50%;
 
@@ -25,15 +25,43 @@
                 --sat-day: 55%;
                 --lum-day: 55%;
 
+                --hue-night: 281;
+                --sat-night: calc(var(--sat-day) / 2);
+                --lum-night: calc(var(--lum-day) / 1.5);
+
+                --hue-ocean: 205;
+                --sat-ocean: 100%;
+                --lum-ocean: 68%;
+
                 --surface-1-day: hsla(var(--hue-day), var(--sat-day), 55%, 1);
                 --surface-2-day: hsla(var(--hue-day), var(--sat-day), 74%, 1);
                 --surface-3-day: hsla(var(--hue-day), var(--sat-day), 84%, 1);
                 --surface-4-day: hsla(var(--hue-day), var(--sat-day), 94%, 1);
+                
+                --surface-1-night: hsla(var(--hue-day), 10%, 10%, 1);
+                --surface-2-night: hsla(var(--hue-day), 10%, 15%, 1);
+                --surface-3-night: hsla(var(--hue-day), 5%, 20%, 1);
+                --surface-4-night: hsla(var(--hue-day), 5%, 25%, 1);
+                
+                --surface-1-ocean: hsla(var(--hue-ocean), var(--sat-ocean), 68%, 1);
+                --surface-2-ocean: hsla(var(--hue-ocean), var(--sat-ocean), 45%, 1);
+                --surface-3-ocean: hsla(var(--hue-ocean), var(--sat-ocean), 35%, 1);
+                --surface-4-ocean: hsla(var(--hue-ocean), var(--sat-ocean), 15%, 1);
 
                 --surface-1: var(--surface-1-day);
                 --surface-2: var(--surface-2-day);
                 --surface-3: var(--surface-3-day);
                 --surface-4: var(--surface-4-day);
+                
+                --surface-5: var(--surface-1-night);
+                --surface-6: var(--surface-2-night);
+                --surface-7: var(--surface-3-night);
+                --surface-8: var(--surface-4-night);
+                
+                --surface-9: var(--surface-1-ocean);
+                --surface-10: var(--surface-2-ocean);
+                --surface-11: var(--surface-3-ocean);
+                --surface-12: var(--surface-4-ocean);
 
                 --dark-1: hsla(var(--hue-day), var(--sat-day), 55%, 1);
             }
@@ -74,6 +102,8 @@
                 display: flex;
                 align-items: center;
                 justify-content: center;
+                flex-direction: column;
+                gap: var(--base-gap);
             }
 
             header,
@@ -84,16 +114,46 @@
             img {
                 width: 70%;
             }
+
+            .square-wrapper {
+                display: grid;
+                grid-template-columns: repeat(4, 1fr);
+                width: 420px;
+                gap: var(--base-gap);
+            }
+            .square {
+                width: 100%;
+                aspect-ratio: 1;
+                border-radius: var(--base-radius);
+            }
         </style>
     </head>
     <body>
         <header>
             <div class="wrapper">
-                <theme-switch arr='["auto", "light", "dark"]'></theme-switch>
+                <theme-switch arr='["auto", "light", "lokl"]'></theme-switch>
                 <a href="/">Blog</a>
             </div>
         </header>
         <main>
+            <div class="examples">
+                <div class="square-wrapper">
+                    <div class="square" style="background-color: var(--surface-1-day);"></div>
+                    <div class="square" style="background-color: var(--surface-2-day);"></div>
+                    <div class="square" style="background-color: var(--surface-3-day);"></div>
+                    <div class="square" style="background-color: var(--surface-4-day);"></div>
+
+                    <div class="square" style="background-color: var(--surface-1-night);"></div>
+                    <div class="square" style="background-color: var(--surface-2-night);"></div>
+                    <div class="square" style="background-color: var(--surface-3-night);"></div>
+                    <div class="square" style="background-color: var(--surface-4-night);"></div>
+                    
+                    <div class="square" style="background-color: var(--surface-1-ocean);"></div>
+                    <div class="square" style="background-color: var(--surface-2-ocean);"></div>
+                    <div class="square" style="background-color: var(--surface-3-ocean);"></div>
+                    <div class="square" style="background-color: var(--surface-4-ocean);"></div>
+                </div>
+            </div>
             <img src="./img/beluga.jpg" alt="Hvaldimir is hungry" />
         </main>
         <footer>
