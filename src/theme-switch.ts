@@ -1,11 +1,28 @@
 /**
+ * <theme-switch> is a web component which enables
+ * users to switch between themes they have defined.
+ *
+ * Features:
+ * - [ ] Config trough attributes `<theme-switch arr='["auto", "light"]'></theme-switch>`
+ * - [x] Keyboard navigation for custom radio buttons
+ * - [ ] Keyboard handling for the dialog
+ *     - [x] close dialog using the 'escape' key
+ *     - [x] re-focus the element which has opened the dialog after closing it again
+ *     - [ ] trapping focus inside the dialog
+ * - [ ] Saving the selected theme to localStorage
+ *
+ * Copyright © 2021 Tony Spegel
+ */
+
+/**
  * @license
  * Copyright 2019 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
 import {LitElement, css, html} from 'lit';
-import {customElement, queryAll, state} from 'lit/decorators.js';
+import {DialogEvent} from './DialogEvent';
+import {customElement, query, queryAll, state} from 'lit/decorators.js';
 import {styleMap} from 'lit/directives/style-map.js';
 
 interface themeStateInterface {
@@ -13,27 +30,16 @@ interface themeStateInterface {
     checked: boolean;
 }
 
+const savePreference = (theme: string): void => {
+    localStorage.setItem('theme-preference', theme);
+};
+
 /**
  * Custom element which helps switching themes.
  */
 @customElement('theme-switch')
 export class ThemeSwitch extends LitElement {
     static override styles = css`
-        /**
-         * Animations
-         */
-        @keyframes gradient {
-            0% {
-                background-position: 3% 50%;
-            }
-            50% {
-                background-position: 97% 50%;
-            }
-            100% {
-                background-position: 3% 50%;
-            }
-        }
-
         :host {
             display: block;
             font-family: Sans-Serif;
@@ -42,31 +48,13 @@ export class ThemeSwitch extends LitElement {
             --base-radius: 8px;
         }
         /**
-         * Button which opens the dialog
-         */
-        #btn-theme-selection {
-            border-radius: 50%;
-            border: 2px solid hsla(281, 53%, 97%, 0.63);
-            width: 25px;
-            aspect-ratio: 1;
-
-            cursor: pointer;
-
-            background: linear-gradient(
-                -45deg,
-                hsla(281, 55%, 74%, 1),
-                hsl(191, 98%, 56%),
-                hsl(281, 60%, 25%),
-                hsl(338, 78%, 48%)
-            );
-
-            background-size: 400% 400%;
-            animation: gradient 10s ease infinite;
-        }
-        /**
          * Dialog
          */
         #dialog-theme-selection {
+            display: flex;
+            flex-direction: column;
+            gap: var(--base-gap);
+
             position: absolute;
             left: 50%;
             top: 50%;
@@ -85,22 +73,27 @@ export class ThemeSwitch extends LitElement {
             text-align: center;
         }
 
+        #dialog-theme-selection:focus {
+            border: 5px solid red;
+        }
+
         #dialog-theme-selection[aria-hidden='true'] {
             display: none;
         }
 
         h2 {
-            margin-top: 0;
+            margin: 0;
             color: hsla(281, 100%, 21%, 1);
         }
 
         .dialog-actions {
-            padding: var(--base-gap) 0;
+            display: flex;
+            gap: var(--base-gap);
         }
 
         .themes {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
+            /* grid-temp    late-columns: repeat(auto-fit, minmax(50px, 1fr)); */
             gap: var(--base-gap);
         }
 
@@ -179,20 +172,83 @@ export class ThemeSwitch extends LitElement {
             transform: scale(2);
         }
     `;
+    /**
+     * Custom element lifecycle events
+     * ===============================
+     */
 
     /**
-     * Decorators
-     * ==============================
+     * Invoked when a component is 
+     * added to the document's DOM.
      */
+    override connectedCallback(): void {
+        super.connectedCallback();
+        /**
+         * Register an EventListener which handles WIP:
+         */
+        addEventListener(DialogEvent.eventName, async (event: DialogEvent) => {
+            /**
+             * targetElement can be any HTMLElement
+             * which has opened the dialog.
+             */
+            const {targetElement} = event;
+            /**
+             * targetElement's id is used to focus() it
+             * after closing the dialog which until then
+             * had its focus trapped
+             */
+            const {id} = targetElement;
+            this.openerElementId = id;
+            /**
+             * If that event has been received,
+             * it's time to set the dialogHidden state to false.
+             * This triggers the 'reactive update cycle'
+             */
+            this.dialogHidden = false;
+            /**
+             * Because ^ this happens to be asynchronous,
+             * we have to wait for updateComplete to resolve
+             * before doing any further work on any DOM element
+             */
+            await this.updateComplete;
+            this.dialogElement.focus();
+        });
+    }
+    /**
+     * Invoked when a component is 
+     * removed from the document's DOM.
+     */
+    override disconnectedCallback(): void {
+        super.disconnectedCallback();
+        removeEventListener(DialogEvent.eventName, () => {
+            console.info(
+                `${DialogEvent.eventName} has been removed as an EventListener`
+            );
+        });
+    }
+    /**
+     * Decorators
+     * ===============================
+     */
+
+    // Buttons to select a theme
     @queryAll('button[role="radio"]')
     private themeButtons!: HTMLButtonElement[];
+    // All tabbable elements
+    @queryAll('a[href], input, button:not([tabindex="-1"])')
+    private allElements!: HTMLElement[];
+    // The dialog itself
+    @query('#dialog-theme-selection')
+    private dialogElement!: HTMLDivElement;
     /**
      * States ✨
      * ===============
      */
+
+    // Used to toggle the dialog's visibility
     @state()
     private dialogHidden = false;
-
+    // Represents radio buttons to select a theme
     @state()
     private themes: themeStateInterface[] = [
         {title: 'auto', checked: true},
@@ -201,6 +257,9 @@ export class ThemeSwitch extends LitElement {
         {title: 'ocean', checked: false},
     ];
 
+    // Id to identify which element has opened a dialog
+    private openerElementId!: string;
+    // The index of the last radio button / theme
     private lastIndex: number = this.themes.length - 1;
 
     /**
@@ -208,25 +267,37 @@ export class ThemeSwitch extends LitElement {
      * ===============
      */
 
-    private toggleDialog() {
-        this.dialogHidden = !this.dialogHidden;
-        if (this.dialogHidden) {
-            document.querySelector('body')?.classList.remove('dialog-open');
-        } else {
-            document.querySelector('body')?.classList.add('dialog-open');
-        }
+    /**
+     * Closes the dialog by setting a the dialogHidden state to false
+     */
+    private closeDialog() {
+        this.dialogHidden = true;
+        // Refactor to its own method
+        document
+            .querySelector<HTMLButtonElement>(`#${this.openerElementId}`)
+            ?.focus();
     }
-
-    private updateViaIndex(index: number): void {
+    /**
+     * Changes the state array of our themes
+     */
+    private updateThemeState(index: number): void {
+        // Create a copy of 'themes'
         const themesCopy = [...this.themes];
+        // Reset every theme to unchecked
         themesCopy.forEach((theme) => (theme.checked = false));
+        // Update only that theme which has been selected
         themesCopy[index].checked = true;
-
+        // Overwrite themes with our copy to trigger the reactive update cycle
         this.themes = themesCopy;
     }
 
-    // WIP for onKeyDown
-    private handleKeyboard(event: KeyboardEvent, currentIndex: number) {
+    /**
+     * WIP
+     * @param event
+     * @param currentIndex
+     * @returns
+     */
+    private handleThemeKeyboard(event: KeyboardEvent, currentIndex: number) {
         const key = event.key;
 
         switch (key) {
@@ -247,7 +318,7 @@ export class ThemeSwitch extends LitElement {
                 }
                 break;
             case 'Enter':
-                this.updateViaIndex(currentIndex);
+                this.updateThemeState(currentIndex);
                 break;
             default:
                 break;
@@ -256,15 +327,31 @@ export class ThemeSwitch extends LitElement {
         return '';
     }
 
+    private handleDialogKeyboard(event: KeyboardEvent) {
+        const key = event.key;
+        const isShift = event.shiftKey;
+        // const firstElement = this.allButtons[0];
+        // console.log(firstElement);
+
+        console.log(this.allElements);
+
+        if (key === 'Escape') {
+            this.closeDialog();
+        }
+
+        if (isShift === false && key === 'Tab') {
+            console.log('tab ->');
+        }
+
+        if (isShift && key === 'Tab') {
+            console.log('<- tab');
+        }
+    }
+
     override render() {
         return html`
-            <button
-                @click=${this.toggleDialog}
-                aria-label="open theme-selection"
-                id="btn-theme-selection"
-                title="open theme-Selection"
-            ></button>
             <div
+                @keyup="${this.handleDialogKeyboard}"
                 aria-hidden="${this.dialogHidden}"
                 aria-label="Theme-Selection"
                 aria-modal="true"
@@ -275,6 +362,8 @@ export class ThemeSwitch extends LitElement {
                 <div class="dialog-title">
                     <h2>Farbschema</h2>
                 </div>
+
+                <!-- <button>First</button> -->
 
                 <div role="radiogroup" class="themes">
                     ${this.themes.map((theme, index) => {
@@ -298,10 +387,14 @@ export class ThemeSwitch extends LitElement {
                             <div class="theme-wrapper">
                                 <div class="circle-wrapper">
                                     <button
-                                        @click="${() =>
-                                            this.updateViaIndex(index)}"
+                                        @click="${() => {
+                                            // Update state
+                                            this.updateThemeState(index);
+                                            // Save selection
+                                            savePreference(theme.title);
+                                        }}"
                                         @keydown="${(event: KeyboardEvent) =>
-                                            this.handleKeyboard(event, index)}"
+                                            this.handleThemeKeyboard(event, index)}"
                                         aria-checked="${theme.checked}"
                                         class="radio inner-circle"
                                         id="${theme.title}"
@@ -322,8 +415,24 @@ export class ThemeSwitch extends LitElement {
                     })}
                 </div>
 
+                <div class="sace">
+                    <input
+                        checked
+                        id="save-selection"
+                        name="save-selection"
+                        type="checkbox"
+                    />
+                    <label for="save-selection">Auswahl speichern</label>
+                    <a id="read-more" href="/about">?</a>
+                </div>
+
                 <div class="dialog-actions">
-                    <button @click=${() => this.toggleDialog()}>Close</button>
+                    <button
+                        @click=${() => this.closeDialog()}
+                        id="btn-close-dialog"
+                    >
+                        close
+                    </button>
                 </div>
             </div>
         `;
