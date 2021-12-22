@@ -37,27 +37,47 @@
                 --surface-2-day: hsla(var(--hue-day), var(--sat-day), 74%, 1);
                 --surface-3-day: hsla(var(--hue-day), var(--sat-day), 84%, 1);
                 --surface-4-day: hsla(var(--hue-day), var(--sat-day), 94%, 1);
-                
+
                 --surface-1-night: hsla(var(--hue-day), 10%, 10%, 1);
                 --surface-2-night: hsla(var(--hue-day), 10%, 15%, 1);
                 --surface-3-night: hsla(var(--hue-day), 5%, 20%, 1);
                 --surface-4-night: hsla(var(--hue-day), 5%, 25%, 1);
-                
-                --surface-1-ocean: hsla(var(--hue-ocean), var(--sat-ocean), 68%, 1);
-                --surface-2-ocean: hsla(var(--hue-ocean), var(--sat-ocean), 45%, 1);
-                --surface-3-ocean: hsla(var(--hue-ocean), var(--sat-ocean), 35%, 1);
-                --surface-4-ocean: hsla(var(--hue-ocean), var(--sat-ocean), 15%, 1);
+
+                --surface-1-ocean: hsla(
+                    var(--hue-ocean),
+                    var(--sat-ocean),
+                    68%,
+                    1
+                );
+                --surface-2-ocean: hsla(
+                    var(--hue-ocean),
+                    var(--sat-ocean),
+                    45%,
+                    1
+                );
+                --surface-3-ocean: hsla(
+                    var(--hue-ocean),
+                    var(--sat-ocean),
+                    35%,
+                    1
+                );
+                --surface-4-ocean: hsla(
+                    var(--hue-ocean),
+                    var(--sat-ocean),
+                    15%,
+                    1
+                );
 
                 --surface-1: var(--surface-1-day);
                 --surface-2: var(--surface-2-day);
                 --surface-3: var(--surface-3-day);
                 --surface-4: var(--surface-4-day);
-                
+
                 --surface-5: var(--surface-1-night);
                 --surface-6: var(--surface-2-night);
                 --surface-7: var(--surface-3-night);
                 --surface-8: var(--surface-4-night);
-                
+
                 --surface-9: var(--surface-1-ocean);
                 --surface-10: var(--surface-2-ocean);
                 --surface-11: var(--surface-3-ocean);
@@ -95,7 +115,7 @@
             .wrapper {
                 display: flex;
                 align-items: center;
-                gap: var(--base-gap);
+                gap: calc(var(--base-gap) / 2);
             }
 
             main {
@@ -126,32 +146,117 @@
                 aspect-ratio: 1;
                 border-radius: var(--base-radius);
             }
+
+            /**
+             * Animations
+             */
+            @keyframes gradient {
+                0% {
+                    background-position: 3% 50%;
+                }
+                50% {
+                    background-position: 97% 50%;
+                }
+                100% {
+                    background-position: 3% 50%;
+                }
+            }
+
+            /**
+             * Button which opens the dialog
+             */
+            #btn-theme-selection {
+                border-radius: 50%;
+                border: 2px solid hsla(281, 53%, 97%, 0.63);
+                width: 25px;
+                aspect-ratio: 1;
+
+                cursor: pointer;
+
+                background: linear-gradient(
+                    -45deg,
+                    hsla(281, 55%, 74%, 1),
+                    hsl(191, 98%, 56%),
+                    hsl(281, 60%, 25%),
+                    hsl(338, 78%, 48%)
+                );
+
+                background-size: 400% 400%;
+                animation: gradient 10s ease infinite;
+            }
+
+            #btn-theme-selection:focus {
+                border-color: violet;
+            }
         </style>
     </head>
-    <body>
+    <body tabindex="0">
         <header>
             <div class="wrapper">
-                <theme-switch arr='["auto", "light", "lokl"]'></theme-switch>
+                <button
+                    aria-label="open theme-selection"
+                    id="btn-theme-selection"
+                    title="Farbschema auswählen"
+                ></button>
+
                 <a href="/">Blog</a>
             </div>
         </header>
-        <main>
+        <main aria-hidden="true">
+            <theme-switch arr='["auto", "light", "lokl"]'></theme-switch>
+
             <div class="examples">
                 <div class="square-wrapper">
-                    <div class="square" style="background-color: var(--surface-1-day);"></div>
-                    <div class="square" style="background-color: var(--surface-2-day);"></div>
-                    <div class="square" style="background-color: var(--surface-3-day);"></div>
-                    <div class="square" style="background-color: var(--surface-4-day);"></div>
+                    <div
+                        class="square"
+                        style="background-color: var(--surface-1-day)"
+                    ></div>
+                    <div
+                        class="square"
+                        style="background-color: var(--surface-2-day)"
+                    ></div>
+                    <div
+                        class="square"
+                        style="background-color: var(--surface-3-day)"
+                    ></div>
+                    <div
+                        class="square"
+                        style="background-color: var(--surface-4-day)"
+                    ></div>
 
-                    <div class="square" style="background-color: var(--surface-1-night);"></div>
-                    <div class="square" style="background-color: var(--surface-2-night);"></div>
-                    <div class="square" style="background-color: var(--surface-3-night);"></div>
-                    <div class="square" style="background-color: var(--surface-4-night);"></div>
-                    
-                    <div class="square" style="background-color: var(--surface-1-ocean);"></div>
-                    <div class="square" style="background-color: var(--surface-2-ocean);"></div>
-                    <div class="square" style="background-color: var(--surface-3-ocean);"></div>
-                    <div class="square" style="background-color: var(--surface-4-ocean);"></div>
+                    <div
+                        class="square"
+                        style="background-color: var(--surface-1-night)"
+                    ></div>
+                    <div
+                        class="square"
+                        style="background-color: var(--surface-2-night)"
+                    ></div>
+                    <div
+                        class="square"
+                        style="background-color: var(--surface-3-night)"
+                    ></div>
+                    <div
+                        class="square"
+                        style="background-color: var(--surface-4-night)"
+                    ></div>
+
+                    <div
+                        class="square"
+                        style="background-color: var(--surface-1-ocean)"
+                    ></div>
+                    <div
+                        class="square"
+                        style="background-color: var(--surface-2-ocean)"
+                    ></div>
+                    <div
+                        class="square"
+                        style="background-color: var(--surface-3-ocean)"
+                    ></div>
+                    <div
+                        class="square"
+                        style="background-color: var(--surface-4-ocean)"
+                    ></div>
                 </div>
             </div>
             <img src="./img/beluga.jpg" alt="Hvaldimir is hungry" />
@@ -159,5 +264,24 @@
         <footer>
             <span>Impressum</span>
         </footer>
+
+        <script>
+            class DialogEvent extends Event {
+                static eventName = 'dialog-event';
+                targetElement = '';
+
+                constructor(targetElement) {
+                    super(DialogEvent.eventName, {bubbles: true});
+                    this.targetElement = targetElement;
+                }
+            }
+
+            document
+                .querySelector('#btn-theme-selection')
+                .addEventListener('click', (event) => {
+                    const {target} = event;
+                    window.dispatchEvent(new DialogEvent(target));
+                });
+        </script>
     </body>
 </html>
