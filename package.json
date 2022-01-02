@@ -31,7 +31,7 @@
     "test:prod": "MODE=prod wtr",
     "test:prod:watch": "MODE=prod wtr --watch",
     "checksize": "rollup -c ; cat theme-switch.bundled.js | gzip -9 | wc -c ; rm theme-switch.bundled.js",
-    "custom-el": "custom-elements-manifest analyze"
+    "create-custom-element-json": "custom-elements-manifest analyze"
   },
   "keywords": [
     "theme-switch",
