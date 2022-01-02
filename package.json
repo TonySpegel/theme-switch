@@ -1,5 +1,5 @@
 {
-  "name": "theme-switch",
+  "name": "theme-switch-component",
   "version": "0.0.1",
   "description": "Switch your site's theme",
   "main": "theme-switch.js",
