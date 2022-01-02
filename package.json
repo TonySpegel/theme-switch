@@ -1,8 +1,8 @@
 {
-  "name": "@lit/lit-starter-ts",
+  "name": "theme-switch",
   "private": true,
-  "version": "1.0.0",
-  "description": "A simple web component",
+  "version": "0.0.1",
+  "description": "Switch your site's theme",
   "main": "theme-switch.js",
   "module": "theme-switch.js",
   "type": "module",
@@ -30,15 +30,17 @@
     "test:watch": "wtr --watch",
     "test:prod": "MODE=prod wtr",
     "test:prod:watch": "MODE=prod wtr --watch",
-    "checksize": "rollup -c ; cat theme-switch.bundled.js | gzip -9 | wc -c ; rm theme-switch.bundled.js"
+    "checksize": "rollup -c ; cat theme-switch.bundled.js | gzip -9 | wc -c ; rm theme-switch.bundled.js",
+    "custom-el": "custom-elements-manifest analyze"
   },
   "keywords": [
-    "web-components",
+    "theme-switch",
+    "lit",
     "lit-element",
     "typescript",
-    "lit"
+    "web-components"
   ],
-  "author": "Google LLC",
+  "author": "Tony Spegel",
   "license": "BSD-3-Clause",
   "dependencies": {
     "lit": "^2.0.0"
@@ -46,7 +48,7 @@
   "devDependencies": {
     "@11ty/eleventy": "^0.12.1",
     "@11ty/eleventy-plugin-syntaxhighlight": "^3.0.1",
-    "@custom-elements-manifest/analyzer": "^0.5.3",
+    "@custom-elements-manifest/analyzer": "^0.5.7",
     "@esm-bundle/chai": "^4.1.5",
     "@open-wc/testing": "^3.0.0-next.1",
     "@open-wc/testing-karma": "^4.0.9",
