@@ -1,70 +1,866 @@
 {
-  "version": "experimental",
-  "tags": [
+  "schemaVersion": "1.0.0",
+  "readme": "",
+  "modules": [
     {
-      "name": "theme-switch",
-      "path": "./src/theme-switch.ts",
-      "description": "An example element.",
-      "attributes": [
+      "kind": "javascript-module",
+      "path": "DialogEvent.d.ts",
+      "declarations": [
         {
-          "name": "name",
-          "description": "The name to say \"Hello\" to.",
-          "type": "string",
-          "default": "\"World\""
-        },
-        {
-          "name": "count",
-          "description": "The number of times the button has been clicked.",
-          "type": "number",
-          "default": "0"
+          "kind": "class",
+          "description": "DialogEvent is used to reference the targetElement\nwhich has opened the ThemeSwitch component.\nThis needs to be done to re-select it after closing\nthe dialog.\n\nDispatching on the host site:\n\ndocument\n    .querySelector('#btn-theme-selection')\n    .addEventListener('click', (event) => {\n         const {target} = event;\n         window.dispatchEvent(new DialogEvent(target));\n    });",
+          "name": "DialogEvent",
+          "members": [
+            {
+              "kind": "field",
+              "name": "eventName",
+              "type": {
+                "text": "\"dialog-event\""
+              },
+              "static": true
+            },
+            {
+              "kind": "field",
+              "name": "targetElement",
+              "type": {
+                "text": "HTMLElement"
+              }
+            }
+          ],
+          "superclass": {
+            "name": "Event",
+            "module": "DialogEvent.d.ts"
+          }
         }
       ],
-      "properties": [
+      "exports": [
         {
-          "name": "name",
-          "attribute": "name",
-          "description": "The name to say \"Hello\" to.",
-          "type": "string",
-          "default": "\"World\""
-        },
-        {
-          "name": "count",
-          "attribute": "count",
-          "description": "The number of times the button has been clicked.",
-          "type": "number",
-          "default": "0"
-        },
-        {
-          "name": "renderRoot",
-          "description": "Node or ShadowRoot into which element DOM should be rendered. Defaults\nto an open shadowRoot.",
-          "type": "HTMLElement | ShadowRoot"
-        },
-        {
-          "name": "isUpdatePending",
-          "type": "boolean"
-        },
-        {
-          "name": "hasUpdated",
-          "type": "boolean"
-        },
-        {
-          "name": "updateComplete",
-          "description": "Returns a Promise that resolves when the element has completed updating.\nThe Promise value is a boolean that is `true` if the element completed the\nupdate without triggering another update. The Promise result is `false` if\na property was set inside `updated()`. If the Promise is rejected, an\nexception was thrown during the update.\n\nTo await additional asynchronous work, override the `getUpdateComplete`\nmethod. For example, it is sometimes useful to await a rendered element\nbefore fulfilling this Promise. To do this, first await\n`super.getUpdateComplete()`, then any subsequent state.",
-          "type": "Promise<boolean>"
-        }
-      ],
-      "slots": [
-        {
-          "name": "",
-          "description": "This element has a slot"
-        }
-      ],
-      "cssParts": [
-        {
-          "name": "button",
-          "description": "The button"
+          "kind": "js",
+          "name": "DialogEvent",
+          "declaration": {
+            "name": "DialogEvent",
+            "module": "DialogEvent.d.ts"
+          }
         }
       ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "DialogEvent.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "DialogEvent is used to reference the targetElement\nwhich has opened the ThemeSwitch component.\nThis needs to be done to re-select it after closing\nthe dialog.\n\nDispatching on the host site:\n\ndocument\n    .querySelector('#btn-theme-selection')\n    .addEventListener('click', (event) => {\n         const {target} = event;\n         window.dispatchEvent(new DialogEvent(target));\n    });",
+          "name": "DialogEvent",
+          "members": [
+            {
+              "kind": "field",
+              "name": "targetElement",
+              "default": "targetElement"
+            }
+          ],
+          "superclass": {
+            "name": "Event",
+            "module": "DialogEvent.js"
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "DialogEvent",
+          "declaration": {
+            "name": "DialogEvent",
+            "module": "DialogEvent.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "ThemeEvent.d.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "ThemeEvent transports the name of a theme so that\na host can react to it accordingly.\n\nListening for the event:\nwindow.addEventListener('theme-event', (themeEvent) => {\n  const {themeName} = themeEvent;\n});\n\nDispatch the event:\nwindow.dispatchEvent(new ThemeEvent('auto'));",
+          "name": "ThemeEvent",
+          "members": [
+            {
+              "kind": "field",
+              "name": "eventName",
+              "type": {
+                "text": "\"theme-event\""
+              },
+              "static": true
+            },
+            {
+              "kind": "field",
+              "name": "themeName",
+              "type": {
+                "text": "string"
+              }
+            }
+          ],
+          "superclass": {
+            "name": "Event",
+            "module": "ThemeEvent.d.ts"
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ThemeEvent",
+          "declaration": {
+            "name": "ThemeEvent",
+            "module": "ThemeEvent.d.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "ThemeEvent.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "ThemeEvent transports the name of a theme so that\na host can react to it accordingly.\n\nListening for the event:\nwindow.addEventListener('theme-event', (themeEvent) => {\n  const {themeName} = themeEvent;\n});\n\nDispatch the event:\nwindow.dispatchEvent(new ThemeEvent('auto'));",
+          "name": "ThemeEvent",
+          "members": [
+            {
+              "kind": "field",
+              "name": "themeName",
+              "type": {
+                "text": "string"
+              },
+              "default": "themeName"
+            }
+          ],
+          "superclass": {
+            "name": "Event",
+            "module": "ThemeEvent.js"
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ThemeEvent",
+          "declaration": {
+            "name": "ThemeEvent",
+            "module": "ThemeEvent.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "theme-switch.d.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Custom element which helps switching themes.",
+          "name": "ThemeSwitch",
+          "members": [
+            {
+              "kind": "field",
+              "name": "styles",
+              "type": {
+                "text": "import(\"lit\").CSSResult"
+              },
+              "static": true
+            },
+            {
+              "kind": "field",
+              "name": "dialogHidden",
+              "privacy": "private",
+              "description": "States ✨ + Decorators\n======================"
+            },
+            {
+              "kind": "field",
+              "name": "themes",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "saveSelection",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "availableThemes",
+              "type": {
+                "text": "string[]"
+              },
+              "description": "Use availableThemes='[\"🐢\", \"🦕\", \"🐸\"]' or don't\nand rely on default themes"
+            },
+            {
+              "kind": "field",
+              "name": "themeButtons",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "openerElementId",
+              "privacy": "private",
+              "description": "Properties\n=========="
+            },
+            {
+              "kind": "field",
+              "name": "lastIndex",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "updateThemeState",
+              "privacy": "private",
+              "description": "Changes the state array of our themes"
+            },
+            {
+              "kind": "field",
+              "name": "closeDialog",
+              "privacy": "private",
+              "description": "Closes the dialog by setting a the dialogHidden state to false"
+            },
+            {
+              "kind": "field",
+              "name": "handleArrowKeys",
+              "privacy": "private",
+              "description": "Arrow keys need to be handled because non standard radion buttons are used"
+            },
+            {
+              "kind": "field",
+              "name": "getTabElements",
+              "privacy": "private",
+              "description": "Get elements which should be accessible by using the tab key.\nThis needs to be done because non standard radio buttons are\nused and the radio button which can be reached changes based\nselection."
+            },
+            {
+              "kind": "field",
+              "name": "focusElement",
+              "privacy": "private",
+              "description": "Used to focus on non standard radio buttons and other elements"
+            },
+            {
+              "kind": "method",
+              "name": "render",
+              "return": {
+                "type": {
+                  "text": "import(\"lit-html\").TemplateResult<1>"
+                }
+              }
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ThemeSwitch",
+          "declaration": {
+            "name": "ThemeSwitch",
+            "module": "theme-switch.d.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "theme-switch.js",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "ThemeSwitch",
+          "default": "class ThemeSwitch extends LitElement {\n    constructor() {\n        super(...arguments);\n        /**\n         * States ✨ + Decorators\n         * ======================\n         */\n        // Used to toggle the dialog's visibility\n        this.dialogHidden = false;\n        // Represents radio buttons to select a theme\n        this.themes = [];\n        // If it's allowed to write to localStorage\n        this.saveSelection = true;\n        /**\n         * Use availableThemes='[\"🐢\", \"🦕\", \"🐸\"]' or don't\n         * and rely on default themes\n         */\n        this.availableThemes = [];\n        // The index of the last radio button / theme\n        this.lastIndex = this.themes.length - 1;\n    }\n    /**\n     * Custom element lifecycle events\n     * ===============================\n     */\n    /**\n     * Invoked when a component is added to the document's DOM.\n     */\n    connectedCallback() {\n        super.connectedCallback();\n        /**\n         * Listen for special event to change the visibility of the component\n         * and safe a reference to the element which has dispatched it\n         */\n        addEventListener(DialogEvent.eventName, async (event) => {\n            /**\n             * targetElement can be any HTMLElement\n             * which has opened the dialog.\n             */\n            const { targetElement } = event;\n            /**\n             * targetElement's id is used to focus() it\n             * after closing the dialog which until then\n             * had its focus trapped\n             */\n            const { id } = targetElement;\n            this.openerElementId = id;\n            /**\n             * If that event has been received,\n             * it's time to set the dialogHidden state to false.\n             * This triggers the 'reactive update cycle'\n             */\n            this.dialogHidden = false;\n            /**\n             * Because ^ this happens to be asynchronous,\n             * we have to wait for updateComplete to resolve\n             * before doing any further work on any DOM element\n             */\n            await this.updateComplete;\n            // When this is done we are ready so focus the first element\n            this.getTabElements()[0].focus();\n        });\n        // Read a users preference from localStorage\n        const preference = readPreference('theme-preference');\n        /**\n         * If themes have been configured through\n         * <theme-switch availableThemes='[\"🐢\", \"🦕\", \"🐸\"]'></theme-switch>\n         * upgrade those otherwise use the default ones\n         */\n        if (Array.isArray(this.availableThemes) &&\n            this.availableThemes.length) {\n            // Themes are upgraded by adding keys\n            this.themes = upgradeToTheme(this.availableThemes);\n        }\n        else {\n            // Use the default themes if none are set\n            this.themes = defaulThemes;\n        }\n        // Find the index in order to select a prefered theme\n        const index = this.themes.findIndex((themes) => themes.name === preference);\n        /**\n         * Upgrade the related theme by using the index,\n         * default to 0 if none was found\n         */\n        this.updateThemeState(index === -1 ? 0 : index);\n    }\n    /**\n     * Invoked when a component is removed from the document's DOM.\n     */\n    disconnectedCallback() {\n        super.disconnectedCallback();\n        removeEventListener(DialogEvent.eventName, () => {\n            console.info(`${DialogEvent.eventName} has been removed as an EventListener`);\n        });\n    }\n    /**\n     * Methods ✨\n     * ===============\n     */\n    /**\n     * Changes the state array of our themes\n     */\n    updateThemeState(index) {\n        // Create a copy of 'themes'\n        const themesCopy = [...this.themes];\n        // Reset every theme to unchecked\n        themesCopy.forEach((theme) => (theme.checked = false));\n        // Update only that theme which has been selected\n        themesCopy[index].checked = true;\n        // Overwrite themes with our copy to trigger the reactive update cycle\n        this.themes = themesCopy;\n    }\n    /**\n     * Closes the dialog by setting a the dialogHidden state to false\n     */\n    closeDialog() {\n        var _a;\n        this.dialogHidden = true;\n        // Refactor to its own method\n        (_a = document\n            .querySelector(`#${this.openerElementId}`)) === null || _a === void 0 ? void 0 : _a.focus();\n    }\n    /**\n     * Arrow keys need to be handled because non standard radion buttons are used\n     */\n    handleArrowKeys(event, currentIndex) {\n        switch (event.key) {\n            case 'ArrowLeft':\n            case 'ArrowUp':\n                if (currentIndex !== 0) {\n                    this.focusElement(this.themeButtons, currentIndex - 1);\n                }\n                else {\n                    this.focusElement(this.themeButtons, this.lastIndex);\n                }\n                break;\n            case 'ArrowRight':\n            case 'ArrowDown':\n                if (currentIndex !== this.lastIndex) {\n                    this.focusElement(this.themeButtons, currentIndex + 1);\n                }\n                else {\n                    this.focusElement(this.themeButtons, 0);\n                }\n                break;\n            default:\n                break;\n        }\n    }\n    /**\n     * Get elements which should be accessible by using the tab key.\n     * This needs to be done because non standard radio buttons are\n     * used and the radio button which can be reached changes based\n     * selection.\n     */\n    getTabElements() {\n        return this.renderRoot.querySelectorAll('a[href], input, button:not([tabindex=\"-1\"])');\n    }\n    /**\n     * Used to focus on non standard radio buttons and other elements\n     */\n    focusElement(nodes, index) {\n        nodes[index].focus();\n    }\n    render() {\n        return html `\n            <div\n                aria-hidden=\"true\"\n                tabindex=\"0\"\n                @focus=\"${() => {\n            const el = this.getTabElements();\n            const index = el.length - 1;\n            this.focusElement(el, index);\n        }}\"\n            ></div>\n            <div class=\"dialog-backdrop\" aria-hidden=\"${this.dialogHidden}\">\n                <div\n                    @keydown=\"${(event) => {\n            if (event.key === 'Escape') {\n                this.closeDialog();\n            }\n        }}\"\n                    aria-hidden=\"${this.dialogHidden}\"\n                    aria-label=\"Theme-Selection\"\n                    aria-modal=\"true\"\n                    id=\"dialog-theme-selection\"\n                    role=\"dialog\"\n                    tabindex=\"-1\"\n                >\n                    <div class=\"dialog-title\">\n                        <slot name=\"heading\"></slot>\n                        <slot name=\"sub-heading\"></slot>\n                    </div>\n\n                    <div role=\"radiogroup\" class=\"themes\">\n                        ${this.themes.map((theme, index) => {\n            return html `\n                                <div class=\"theme-wrapper\">\n                                    <div class=\"circle-wrapper\">\n                                        <button\n                                            @click=\"${() => {\n                // Update state\n                this.updateThemeState(index);\n                // Save selection if user has agreed to do so\n                if (this.saveSelection) {\n                    savePreference(theme.name);\n                }\n                window.dispatchEvent(new ThemeEvent(theme.name));\n            }}\"\n                                            @keydown=\"${(event) => {\n                this.handleArrowKeys(event, index);\n                if (event.key === 'Enter') {\n                    this.updateThemeState(index);\n                }\n            }}\"\n                                            aria-checked=\"${theme.checked}\"\n                                            class=\"radio inner-circle\"\n                                            id=\"${theme.name}\"\n                                            role=\"radio\"\n                                            tabindex=${theme.checked ? 0 : -1}\n                                        ></button>\n                                        <div class=\"outer-circle\"></div>\n                                    </div>\n\n                                    <label for=\"${theme.name}\">\n                                        ${theme.name}\n                                    </label>\n                                </div>\n                            `;\n        })}\n                    </div>\n\n                    <div class=\"save\">\n                        <div>\n                            <input\n                                ?checked=${this.saveSelection}\n                                @click=${() => {\n            this.saveSelection = !this.saveSelection;\n        }}\n                                id=\"save-selection\"\n                                name=\"save-selection\"\n                                type=\"checkbox\"\n                            />\n                            <label for=\"save-selection\">\n                                Auswahl speichern\n                            </label>\n                        </div>\n                        <!-- <a\n                            class=\"dialog-control\"\n                            href=\"/about\"\n                            id=\"read-more\"\n                            target=\"_blank\"\n                            title=\"Was wird gespeichert?\"\n                        >\n                            ?\n                        </a> -->\n                        <slot name=\"read-more\"></slot>\n                    </div>\n\n                    <button\n                        @click=${this.closeDialog}\n                        class=\"dialog-control\"\n                        id=\"btn-close-dialog\"\n                        title=\"Dialog schließen\"\n                    >\n                        Schließen\n                    </button>\n                </div>\n                <div\n                    @focus=\"${() => {\n            const el = this.getTabElements();\n            this.focusElement(el, 0);\n        }}\"\n                    aria-hidden=\"true\"\n                    tabindex=\"0\"\n                ></div>\n            </div>\n        `;\n    }\n}",
+          "description": "Custom element which helps switching themes."
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ThemeSwitch",
+          "declaration": {
+            "name": "ThemeSwitch",
+            "module": "theme-switch.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "docs/theme-switch.bundled.js",
+      "declarations": [
+        {
+          "kind": "variable",
+          "name": "t"
+        },
+        {
+          "kind": "variable",
+          "name": "i"
+        },
+        {
+          "kind": "variable",
+          "name": "tt",
+          "default": "class extends F{constructor(){super(...arguments),this.name=\"World\",this.count=0}render(){return U`\n      <h1>${this.sayHello(this.name)}!</h1>\n      <button @click=${this._onClick} part=\"button\">\n        Click Count: ${this.count}\n      </button>\n      <slot></slot>\n    `}_onClick(){this.count++,this.dispatchEvent(new CustomEvent(\"count-changed\"))}sayHello(t){return`Hello, ${t}`}}"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "custom-element-definition",
+          "name": "t",
+          "declaration": {
+            "name": "i",
+            "module": "docs/theme-switch.bundled.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "t",
+          "declaration": {
+            "name": "i",
+            "module": "docs/theme-switch.bundled.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "ThemeSwitch",
+          "declaration": {
+            "name": "tt",
+            "module": "docs/theme-switch.bundled.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/DialogEvent.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "DialogEvent is used to reference the targetElement\nwhich has opened the ThemeSwitch component.\nThis needs to be done to re-select it after closing \nthe dialog.\n\nDispatching on the host site:\n\ndocument\n    .querySelector('#btn-theme-selection')\n    .addEventListener('click', (event) => {\n         const {target} = event;\n         window.dispatchEvent(new DialogEvent(target));\n    });",
+          "name": "DialogEvent",
+          "members": [
+            {
+              "kind": "field",
+              "name": "eventName",
+              "static": true,
+              "default": "'dialog-event'",
+              "type": {
+                "text": "'dialog-event'"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "targetElement",
+              "type": {
+                "text": "HTMLElement"
+              },
+              "default": "targetElement"
+            }
+          ],
+          "superclass": {
+            "name": "Event",
+            "module": "src/DialogEvent.ts"
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "DialogEvent",
+          "declaration": {
+            "name": "DialogEvent",
+            "module": "src/DialogEvent.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/ThemeEvent.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "ThemeEvent transports the name of a theme so that \na host can react to it accordingly.\n\nListening for the event:\nwindow.addEventListener('theme-event', (themeEvent) => {\n  const {themeName} = themeEvent;\n});\n\nDispatch the event:\nwindow.dispatchEvent(new ThemeEvent('auto'));",
+          "name": "ThemeEvent",
+          "members": [
+            {
+              "kind": "field",
+              "name": "eventName",
+              "static": true,
+              "default": "'theme-event'",
+              "type": {
+                "text": "'theme-event'"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "themeName",
+              "type": {
+                "text": "string"
+              },
+              "default": "themeName"
+            }
+          ],
+          "superclass": {
+            "name": "Event",
+            "module": "src/ThemeEvent.ts"
+          }
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ThemeEvent",
+          "declaration": {
+            "name": "ThemeEvent",
+            "module": "src/ThemeEvent.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/theme-switch.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Custom element which helps switching themes.",
+          "name": "ThemeSwitch",
+          "members": [
+            {
+              "kind": "field",
+              "name": "styles",
+              "static": true,
+              "default": "css`\n        :host {\n            font-family: var(--font-fam, sans-serif);\n\n            --base-gap: 8px;\n            --base-radius: 8px;\n            --blur-amount: 5px;\n            --backdrop-color: hsla(0, 0, 78%, 0.1);\n        }\n\n        ::slotted(h2) {\n            margin: 0;\n        }\n\n        ::slotted(#read-more) {\n            display: inline-flex;\n            align-items: center;\n            justify-content: center;\n            border-radius: 50%;\n            padding: 4px;\n            width: 20px;\n            aspect-ratio: 1 / 1;\n            text-decoration: none;\n\n            color: var(--text-2);\n            transition: transform 50ms ease-in-out,\n                background-color 100ms ease-in-out;\n            background-color: var(--surface-3);\n        }\n\n        ::slotted(a#read-more:hover),\n        ::slotted(a#read-more:focus) {\n            background-color: var(--surface-2);\n        }\n\n        .dialog-backdrop {\n            display: flex;\n            align-items: center;\n            justify-content: center;\n            position: fixed;\n            left: 0;\n            top: 0;\n            width: 100%;\n            height: 100%;\n            z-index: 1;\n            background-color: var(\n                --backdrop-color,\n                hsla(260deg, 55%, 35%, 19%)\n            );\n            backdrop-filter: blur(var(--blur-amount, 5px));\n        }\n\n        .dialog-backdrop[aria-hidden='true'] {\n            display: none;\n        }\n        /**\n         * Dialog\n         */\n        #dialog-theme-selection {\n            display: flex;\n            flex-direction: column;\n            gap: calc(var(--base-gap) * 1.5);\n\n            position: absolute;\n            left: 50%;\n            top: 50%;\n\n            outline: none;\n            border: 3px solid var(--surface-2);\n            border-radius: calc(var(--base-radius) * 2);\n            padding: calc(var(--base-gap) * 1.5);\n            width: 250px;\n\n            transform: translate(-50%, -50%);\n\n            background-color: white;\n            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19),\n                0 6px 6px rgba(0, 0, 0, 0.23);\n\n            text-align: center;\n        }\n\n        #dialog-theme-selection[aria-hidden='true'] {\n            display: none;\n        }\n\n        h2 {\n            margin: 0;\n            color: hsla(281, 100%, 21%, 1);\n            color: var(--text-1);\n        }\n\n        .themes {\n            display: grid;\n            grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));\n            gap: calc(var(--base-gap) / 2);\n            padding: calc(var(--base-gap) / 2);\n            border: 1px solid lavender;\n            border-radius: var(--base-radius);\n        }\n\n        .theme-wrapper {\n            display: flex;\n            flex-direction: column;\n            align-items: center;\n            gap: calc(var(--base-gap) / 4);\n\n            border-radius: var(--base-radius);\n            padding: calc(var(--base-gap) / 2);\n        }\n\n        .theme-wrapper > label {\n            color: var(--text-1);\n            cursor: pointer;\n            text-transform: capitalize;\n        }\n\n        .radio[aria-checked='true'].inner-circle {\n            background-color: var(--surface-1);\n        }\n\n        .circle-wrapper {\n            display: grid;\n            place-items: center;\n            grid-template-areas: 'circle';\n            width: 100%;\n            max-width: 45px;\n            aspect-ratio: 1;\n        }\n\n        .inner-circle {\n            grid-area: circle;\n            z-index: 1;\n\n            background-color: var(--surface-4);\n            border-color: var(--surface-2);\n        }\n\n        .outer-circle {\n            grid-area: circle;\n            z-index: 0;\n\n            border-radius: 50%;\n            width: 50%;\n            aspect-ratio: 1;\n\n            background-color: var(--surface-4);\n            transition: transform 0.4s cubic-bezier(0.54, 1.5, 0.38, 1.2);\n        }\n\n        .radio {\n            cursor: pointer;\n            border-radius: 50%;\n            width: 60%;\n            aspect-ratio: 1;\n\n            border: 2px solid var(--surface-1);\n\n            transition: transform 0.4s cubic-bezier(0.54, 1.5, 0.38, 1.2);\n            outline: none;\n        }\n\n        .radio:hover + .outer-circle,\n        .radio:focus + .outer-circle {\n            transform: scale(2);\n        }\n\n        .save {\n            display: flex;\n            align-items: center;\n            justify-content: center;\n            gap: var(--base-gap);\n        }\n\n        .dialog-control {\n            color: var(--text-2);\n            transition: transform 50ms ease-in-out,\n                background-color 100ms ease-in-out;\n            background-color: var(--surface-3);\n        }\n\n        .dialog-control:hover,\n        .dialog-control:focus {\n            background-color: var(--surface-2);\n        }\n\n        #btn-close-dialog {\n            cursor: pointer;\n\n            border: none;\n            border-radius: var(--base-radius);\n            margin: 0 auto;\n            padding: calc(var(--base-gap) / 2);\n            width: 80%;\n\n            text-transform: capitalize;\n        }\n\n        @media (prefers-reduced-motion: no-preference) {\n            #read-more:active,\n            #btn-close-dialog:active {\n                transform: scale(0.95);\n            }\n        }\n    `"
+            },
+            {
+              "kind": "field",
+              "name": "dialogHidden",
+              "type": {
+                "text": "boolean"
+              },
+              "privacy": "private",
+              "default": "false",
+              "description": "States ✨ + Decorators\n======================"
+            },
+            {
+              "kind": "field",
+              "name": "themes",
+              "type": {
+                "text": "themeStateInterface[]"
+              },
+              "privacy": "private",
+              "default": "[]"
+            },
+            {
+              "kind": "field",
+              "name": "saveSelection",
+              "type": {
+                "text": "boolean"
+              },
+              "privacy": "private",
+              "default": "true"
+            },
+            {
+              "kind": "field",
+              "name": "availableThemes",
+              "type": {
+                "text": "string[]"
+              },
+              "default": "[]",
+              "description": "Use availableThemes='[\"🐢\", \"🦕\", \"🐸\"]' or don't\nand rely on default themes"
+            },
+            {
+              "kind": "field",
+              "name": "themeButtons",
+              "type": {
+                "text": "NodeListOf<HTMLButtonElement>"
+              },
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "openerElementId",
+              "type": {
+                "text": "string"
+              },
+              "privacy": "private",
+              "description": "Properties\n=========="
+            },
+            {
+              "kind": "field",
+              "name": "lastIndex",
+              "type": {
+                "text": "number"
+              },
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "updateThemeState",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "index",
+                  "type": {
+                    "text": "number"
+                  }
+                }
+              ],
+              "description": "Changes the state array of our themes"
+            },
+            {
+              "kind": "method",
+              "name": "closeDialog",
+              "privacy": "private",
+              "description": "Closes the dialog by setting a the dialogHidden state to false"
+            },
+            {
+              "kind": "method",
+              "name": "handleArrowKeys",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "event",
+                  "type": {
+                    "text": "KeyboardEvent"
+                  }
+                },
+                {
+                  "name": "currentIndex",
+                  "type": {
+                    "text": "number"
+                  }
+                }
+              ],
+              "description": "Arrow keys need to be handled because non standard radion buttons are used"
+            },
+            {
+              "kind": "method",
+              "name": "getTabElements",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "NodeListOf<HTMLElement>"
+                }
+              },
+              "description": "Get elements which should be accessible by using the tab key.\nThis needs to be done because non standard radio buttons are\nused and the radio button which can be reached changes based\nselection."
+            },
+            {
+              "kind": "method",
+              "name": "focusElement",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "nodes",
+                  "type": {
+                    "text": "NodeListOf<HTMLElement>"
+                  }
+                },
+                {
+                  "name": "index",
+                  "type": {
+                    "text": "number"
+                  }
+                }
+              ],
+              "description": "Used to focus on non standard radio buttons and other elements"
+            },
+            {
+              "kind": "method",
+              "name": "render"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ThemeSwitch",
+          "declaration": {
+            "name": "ThemeSwitch",
+            "module": "src/theme-switch.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "test/theme-switch_test.d.ts",
+      "declarations": [],
+      "exports": []
+    },
+    {
+      "kind": "javascript-module",
+      "path": "test/theme-switch_test.js",
+      "declarations": [],
+      "exports": []
+    },
+    {
+      "kind": "javascript-module",
+      "path": "docs-src/_data/api.11tydata.js",
+      "declarations": [],
+      "exports": []
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/@types/dialogEvent.d.ts",
+      "declarations": [],
+      "exports": []
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/test/theme-switch_test.ts",
+      "declarations": [],
+      "exports": []
+    },
+    {
+      "kind": "javascript-module",
+      "path": "docs/node_modules/lit/polyfill-support.js",
+      "declarations": [],
+      "exports": []
+    },
+    {
+      "kind": "javascript-module",
+      "path": "docs/node_modules/@webcomponents/webcomponentsjs/custom-elements-es5-adapter.js",
+      "declarations": [],
+      "exports": []
+    },
+    {
+      "kind": "javascript-module",
+      "path": "docs/node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.d.ts",
+      "declarations": [],
+      "exports": []
+    },
+    {
+      "kind": "javascript-module",
+      "path": "docs/node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js",
+      "declarations": [],
+      "exports": []
+    },
+    {
+      "kind": "javascript-module",
+      "path": "docs/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js",
+      "declarations": [],
+      "exports": []
+    },
+    {
+      "kind": "javascript-module",
+      "path": "docs/node_modules/@webcomponents/webcomponentsjs/bundles/webcomponents-ce.js",
+      "declarations": [],
+      "exports": []
+    },
+    {
+      "kind": "javascript-module",
+      "path": "docs/node_modules/@webcomponents/webcomponentsjs/bundles/webcomponents-pf_dom.js",
+      "declarations": [],
+      "exports": []
+    },
+    {
+      "kind": "javascript-module",
+      "path": "docs/node_modules/@webcomponents/webcomponentsjs/bundles/webcomponents-pf_js.js",
+      "declarations": [],
+      "exports": []
+    },
+    {
+      "kind": "javascript-module",
+      "path": "docs/node_modules/@webcomponents/webcomponentsjs/bundles/webcomponents-sd-ce-pf.js",
+      "declarations": [],
+      "exports": []
+    },
+    {
+      "kind": "javascript-module",
+      "path": "docs/node_modules/@webcomponents/webcomponentsjs/bundles/webcomponents-sd-ce.js",
+      "declarations": [],
+      "exports": []
+    },
+    {
+      "kind": "javascript-module",
+      "path": "docs/node_modules/@webcomponents/webcomponentsjs/bundles/webcomponents-sd.js",
+      "declarations": [],
+      "exports": []
+    },
+    {
+      "kind": "javascript-module",
+      "path": "docs/node_modules/@webcomponents/webcomponentsjs/src/flag-parser.js",
+      "declarations": [],
+      "exports": []
+    },
+    {
+      "kind": "javascript-module",
+      "path": "docs/node_modules/@webcomponents/webcomponentsjs/src/unresolved.js",
+      "declarations": [],
+      "exports": []
+    },
+    {
+      "kind": "javascript-module",
+      "path": "docs/node_modules/@webcomponents/webcomponentsjs/src/platform/baseuri.js",
+      "declarations": [],
+      "exports": []
+    },
+    {
+      "kind": "javascript-module",
+      "path": "docs/node_modules/@webcomponents/webcomponentsjs/src/platform/custom-event.js",
+      "declarations": [],
+      "exports": []
+    },
+    {
+      "kind": "javascript-module",
+      "path": "docs/node_modules/@webcomponents/webcomponentsjs/src/platform/es6-misc.js",
+      "declarations": [],
+      "exports": []
+    },
+    {
+      "kind": "javascript-module",
+      "path": "docs/node_modules/@webcomponents/webcomponentsjs/src/platform/get-attribute-names.js",
+      "declarations": [],
+      "exports": []
+    },
+    {
+      "kind": "javascript-module",
+      "path": "docs/node_modules/@webcomponents/webcomponentsjs/src/platform/matches.js",
+      "declarations": [],
+      "exports": []
+    },
+    {
+      "kind": "javascript-module",
+      "path": "docs/node_modules/@webcomponents/webcomponentsjs/src/platform/promise.js",
+      "declarations": [],
+      "exports": []
+    },
+    {
+      "kind": "javascript-module",
+      "path": "docs/node_modules/@webcomponents/webcomponentsjs/src/platform/svg-element-class-list.js",
+      "declarations": [],
+      "exports": []
+    },
+    {
+      "kind": "javascript-module",
+      "path": "docs/node_modules/@webcomponents/webcomponentsjs/src/platform/symbol.js",
+      "declarations": [],
+      "exports": []
+    },
+    {
+      "kind": "javascript-module",
+      "path": "docs/node_modules/@webcomponents/webcomponentsjs/src/entrypoints/custom-elements-es5-adapter-index.js",
+      "declarations": [],
+      "exports": []
+    },
+    {
+      "kind": "javascript-module",
+      "path": "docs/node_modules/@webcomponents/webcomponentsjs/src/entrypoints/webcomponents-bundle-index.js",
+      "declarations": [],
+      "exports": []
+    },
+    {
+      "kind": "javascript-module",
+      "path": "docs/node_modules/@webcomponents/webcomponentsjs/src/entrypoints/webcomponents-ce-index.js",
+      "declarations": [],
+      "exports": []
+    },
+    {
+      "kind": "javascript-module",
+      "path": "docs/node_modules/@webcomponents/webcomponentsjs/src/entrypoints/webcomponents-pf_dom-index.js",
+      "declarations": [],
+      "exports": []
+    },
+    {
+      "kind": "javascript-module",
+      "path": "docs/node_modules/@webcomponents/webcomponentsjs/src/entrypoints/webcomponents-pf_js-index.js",
+      "declarations": [],
+      "exports": []
+    },
+    {
+      "kind": "javascript-module",
+      "path": "docs/node_modules/@webcomponents/webcomponentsjs/src/entrypoints/webcomponents-sd-ce-index.js",
+      "declarations": [],
+      "exports": []
+    },
+    {
+      "kind": "javascript-module",
+      "path": "docs/node_modules/@webcomponents/webcomponentsjs/src/entrypoints/webcomponents-sd-ce-pf-index.js",
+      "declarations": [],
+      "exports": []
+    },
+    {
+      "kind": "javascript-module",
+      "path": "docs/node_modules/@webcomponents/webcomponentsjs/src/entrypoints/webcomponents-sd-index.js",
+      "declarations": [],
+      "exports": []
+    },
+    {
+      "kind": "javascript-module",
+      "path": "docs/node_modules/@webcomponents/webcomponentsjs/src/platform/parent-node/append.js",
+      "declarations": [],
+      "exports": []
+    },
+    {
+      "kind": "javascript-module",
+      "path": "docs/node_modules/@webcomponents/webcomponentsjs/src/platform/parent-node/index.js",
+      "declarations": [],
+      "exports": []
+    },
+    {
+      "kind": "javascript-module",
+      "path": "docs/node_modules/@webcomponents/webcomponentsjs/src/platform/parent-node/prepend.js",
+      "declarations": [],
+      "exports": []
+    },
+    {
+      "kind": "javascript-module",
+      "path": "docs/node_modules/@webcomponents/webcomponentsjs/src/platform/parent-node/replace-children.js",
+      "declarations": [],
+      "exports": []
+    },
+    {
+      "kind": "javascript-module",
+      "path": "docs/node_modules/@webcomponents/webcomponentsjs/src/platform/child-node/after.js",
+      "declarations": [],
+      "exports": []
+    },
+    {
+      "kind": "javascript-module",
+      "path": "docs/node_modules/@webcomponents/webcomponentsjs/src/platform/child-node/before.js",
+      "declarations": [],
+      "exports": []
+    },
+    {
+      "kind": "javascript-module",
+      "path": "docs/node_modules/@webcomponents/webcomponentsjs/src/platform/child-node/index.js",
+      "declarations": [],
+      "exports": []
+    },
+    {
+      "kind": "javascript-module",
+      "path": "docs/node_modules/@webcomponents/webcomponentsjs/src/platform/child-node/remove.js",
+      "declarations": [],
+      "exports": []
+    },
+    {
+      "kind": "javascript-module",
+      "path": "docs/node_modules/@webcomponents/webcomponentsjs/src/platform/child-node/replace-with.js",
+      "declarations": [],
+      "exports": []
     }
   ]
 }
