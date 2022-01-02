@@ -3,6 +3,9 @@
 <html>
     <head>
         <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="theme-color" content="#ff0000" />
+
         <title>&lt;theme-switch> Demo</title>
         <script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
         <script src="../node_modules/lit/polyfill-support.js"></script>
@@ -11,79 +14,93 @@
             * {
                 --base-gap: 16px;
                 --base-radius: 8px;
+                --font-fam: 'Inter', sans-serif;
 
                 --glass-tint: hsla(281, 53%, 97%, 0.63);
 
-                --that-color: hsl(120, 61%, 50%);
+                --hue-light: 281;
+                --sat-light: 55%;
+                --lum-light: 55%;
 
-                /* --hue: 120; */
-                /* --sat: 61%; */
-                --color: 120, 61%;
-                --l: 50%;
+                --hue-dark: 281;
+                --sat-dark: calc(var(--sat-light) / 2);
+                --lum-dark: calc(var(--lum-light) / 1.5);
 
-                --hue-day: 281;
-                --sat-day: 55%;
-                --lum-day: 55%;
-
-                --hue-night: 281;
-                --sat-night: calc(var(--sat-day) / 2);
-                --lum-night: calc(var(--lum-day) / 1.5);
-
-                --hue-ocean: 205;
-                --sat-ocean: 100%;
-                --lum-ocean: 68%;
-
-                --surface-1-day: hsla(var(--hue-day), var(--sat-day), 55%, 1);
-                --surface-2-day: hsla(var(--hue-day), var(--sat-day), 74%, 1);
-                --surface-3-day: hsla(var(--hue-day), var(--sat-day), 84%, 1);
-                --surface-4-day: hsla(var(--hue-day), var(--sat-day), 94%, 1);
-
-                --surface-1-night: hsla(var(--hue-day), 10%, 10%, 1);
-                --surface-2-night: hsla(var(--hue-day), 10%, 15%, 1);
-                --surface-3-night: hsla(var(--hue-day), 5%, 20%, 1);
-                --surface-4-night: hsla(var(--hue-day), 5%, 25%, 1);
-
-                --surface-1-ocean: hsla(
-                    var(--hue-ocean),
-                    var(--sat-ocean),
-                    68%,
+                --surface-1-light: hsla(
+                    var(--hue-light),
+                    var(--sat-light),
+                    55%,
                     1
                 );
-                --surface-2-ocean: hsla(
-                    var(--hue-ocean),
-                    var(--sat-ocean),
-                    45%,
+                --surface-2-light: hsla(
+                    var(--hue-light),
+                    var(--sat-light),
+                    74%,
                     1
                 );
-                --surface-3-ocean: hsla(
-                    var(--hue-ocean),
-                    var(--sat-ocean),
-                    35%,
+                --surface-3-light: hsla(
+                    var(--hue-light),
+                    var(--sat-light),
+                    84%,
                     1
                 );
-                --surface-4-ocean: hsla(
-                    var(--hue-ocean),
-                    var(--sat-ocean),
-                    15%,
+                --surface-4-light: hsla(
+                    var(--hue-light),
+                    var(--sat-light),
+                    94%,
                     1
                 );
 
-                --surface-1: var(--surface-1-day);
-                --surface-2: var(--surface-2-day);
-                --surface-3: var(--surface-3-day);
-                --surface-4: var(--surface-4-day);
+                --surface-1-dark: hsla(var(--hue-light), 56%, 10%, 1);
+                --surface-2-dark: hsla(var(--hue-light), 60%, 15%, 1);
+                --surface-3-dark: hsla(var(--hue-light), 60%, 20%, 1);
+                --surface-4-dark: hsla(var(--hue-light), 60%, 25%, 1);
+            }
 
-                --surface-5: var(--surface-1-night);
-                --surface-6: var(--surface-2-night);
-                --surface-7: var(--surface-3-night);
-                --surface-8: var(--surface-4-night);
+            :root {
+                color-scheme: light;
+                --surface-1: var(--surface-1-light);
+                --surface-2: var(--surface-2-light);
+                --surface-3: var(--surface-3-light);
+                --surface-4: var(--surface-4-light);
 
-                --surface-9: var(--surface-1-ocean);
-                --surface-10: var(--surface-2-ocean);
-                --surface-11: var(--surface-3-ocean);
-                --surface-12: var(--surface-4-ocean);
+                --text-1: hsl(281deg, 100%, 16%);
+                --text-2: hsl(281deg, 100%, 16%);
+            }
 
-                --dark-1: hsla(var(--hue-day), var(--sat-day), 55%, 1);
+            :root[color-mode='light'] {
+                color-scheme: light;
+                --surface-1: var(--surface-1-light);
+                --surface-2: var(--surface-2-light);
+                --surface-3: var(--surface-3-light);
+                --surface-4: var(--surface-4-light);
+
+                --text-1: hsl(281deg, 100%, 16%);
+                --text-2: hsl(281deg, 100%, 16%);
+            }
+
+            @media (prefers-color-scheme: dark) {
+                :root {
+                    color-scheme: dark;
+                    --surface-1: var(--surface-1-dark);
+                    --surface-2: var(--surface-2-dark);
+                    --surface-3: var(--surface-3-dark);
+                    --surface-4: var(--surface-4-dark);
+
+                    --text-1: var(--surface-1);
+                    --text-2: #fff;
+                }
+            }
+
+            :root[color-mode='dark'] {
+                color-scheme: dark;
+                --surface-1: var(--surface-1-dark);
+                --surface-2: var(--surface-2-dark);
+                --surface-3: var(--surface-3-dark);
+                --surface-4: var(--surface-4-dark);
+
+                --text-1: var(--surface-1);
+                --text-2: #fff;
             }
 
             body {
@@ -91,19 +108,7 @@
                 grid-template-rows: auto 1fr auto;
                 margin: 0;
                 height: 100vh;
-                font-family: Sans-Serif;
-            }
-
-            body.dialog-open:before {
-                content: '';
-                display: block;
-                position: fixed;
-                left: 0;
-                top: 0;
-                width: 100%;
-                height: 100%;
-                background-color: rgba(220, 220, 220, 0.5);
-                backdrop-filter: blur(2px);
+                font-family: 'Inter', sans-serif;
             }
 
             header {
@@ -115,7 +120,7 @@
             .wrapper {
                 display: flex;
                 align-items: center;
-                gap: calc(var(--base-gap) / 2);
+                gap: var(--base-gap);
             }
 
             main {
@@ -124,6 +129,7 @@
                 justify-content: center;
                 flex-direction: column;
                 gap: var(--base-gap);
+                padding: var(--base-gap);
             }
 
             header,
@@ -138,9 +144,11 @@
             .square-wrapper {
                 display: grid;
                 grid-template-columns: repeat(4, 1fr);
-                width: 420px;
+                max-width: 420px;
+                width: 100%;
                 gap: var(--base-gap);
             }
+
             .square {
                 width: 100%;
                 aspect-ratio: 1;
@@ -188,6 +196,40 @@
             #btn-theme-selection:focus {
                 border-color: violet;
             }
+
+            @font-face {
+                font-family: 'Inter';
+                font-style: normal;
+                font-weight: 400;
+                font-display: swap;
+                src: url(https://fonts.gstatic.com/s/inter/v3/UcC73FwrK3iLTeHuS_fvQtMwCp50KnMa1ZL7.woff2)
+                    format('woff2');
+                unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC,
+                    U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122,
+                    U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+            }
+            @font-face {
+                font-family: 'Inter';
+                font-style: normal;
+                font-weight: 500;
+                font-display: swap;
+                src: url(https://fonts.gstatic.com/s/inter/v3/UcC73FwrK3iLTeHuS_fvQtMwCp50KnMa1ZL7.woff2)
+                    format('woff2');
+                unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC,
+                    U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122,
+                    U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+            }
+            @font-face {
+                font-family: 'Inter';
+                font-style: normal;
+                font-weight: 700;
+                font-display: swap;
+                src: url(https://fonts.gstatic.com/s/inter/v3/UcC73FwrK3iLTeHuS_fvQtMwCp50KnMa1ZL7.woff2)
+                    format('woff2');
+                unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC,
+                    U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122,
+                    U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+            }
         </style>
     </head>
     <body tabindex="0">
@@ -203,63 +245,58 @@
             </div>
         </header>
         <main aria-hidden="true">
-            <theme-switch arr='["auto", "light", "lokl"]'></theme-switch>
+            <!-- <theme-switch availableThemes='["🐢", "🦕", "🐸"]'></theme-switch> -->
+            <theme-switch>
+                <h2 slot="heading">Theme Auswahl</h2>
+                <span slot="sub-heading">Wähle ein Theme für die Website</span>
+                <a
+                    class="dialog-control"
+                    href="/about"
+                    id="read-more"
+                    slot="read-more"
+                    target="_blank"
+                    title="Was wird gespeichert?"
+                >
+                    ?
+                </a>
+            </theme-switch>
 
-            <div class="examples">
-                <div class="square-wrapper">
-                    <div
-                        class="square"
-                        style="background-color: var(--surface-1-day)"
-                    ></div>
-                    <div
-                        class="square"
-                        style="background-color: var(--surface-2-day)"
-                    ></div>
-                    <div
-                        class="square"
-                        style="background-color: var(--surface-3-day)"
-                    ></div>
-                    <div
-                        class="square"
-                        style="background-color: var(--surface-4-day)"
-                    ></div>
+            <div class="square-wrapper">
+                <div
+                    class="square"
+                    style="background-color: var(--surface-1-light)"
+                ></div>
+                <div
+                    class="square"
+                    style="background-color: var(--surface-2-light)"
+                ></div>
+                <div
+                    class="square"
+                    style="background-color: var(--surface-3-light)"
+                ></div>
+                <div
+                    class="square"
+                    style="background-color: var(--surface-4-light)"
+                ></div>
 
-                    <div
-                        class="square"
-                        style="background-color: var(--surface-1-night)"
-                    ></div>
-                    <div
-                        class="square"
-                        style="background-color: var(--surface-2-night)"
-                    ></div>
-                    <div
-                        class="square"
-                        style="background-color: var(--surface-3-night)"
-                    ></div>
-                    <div
-                        class="square"
-                        style="background-color: var(--surface-4-night)"
-                    ></div>
-
-                    <div
-                        class="square"
-                        style="background-color: var(--surface-1-ocean)"
-                    ></div>
-                    <div
-                        class="square"
-                        style="background-color: var(--surface-2-ocean)"
-                    ></div>
-                    <div
-                        class="square"
-                        style="background-color: var(--surface-3-ocean)"
-                    ></div>
-                    <div
-                        class="square"
-                        style="background-color: var(--surface-4-ocean)"
-                    ></div>
-                </div>
+                <div
+                    class="square"
+                    style="background-color: var(--surface-1-dark)"
+                ></div>
+                <div
+                    class="square"
+                    style="background-color: var(--surface-2-dark)"
+                ></div>
+                <div
+                    class="square"
+                    style="background-color: var(--surface-3-dark)"
+                ></div>
+                <div
+                    class="square"
+                    style="background-color: var(--surface-4-dark)"
+                ></div>
             </div>
-            <img src="./img/beluga.jpg" alt="Hvaldimir is hungry" />
+            <img src="img/beluga.jpg" alt="Hvaldimir is hungry" />
         </main>
         <footer>
             <span>Impressum</span>
@@ -276,12 +313,36 @@
                 }
             }
 
+            const setMetaThemeColor = (themeColor) => {
+                document
+                    .querySelector('meta[name=theme-color]')
+                    .setAttribute('content', themeColor);
+            };
+
             document
                 .querySelector('#btn-theme-selection')
                 .addEventListener('click', (event) => {
                     const {target} = event;
                     window.dispatchEvent(new DialogEvent(target));
                 });
+
+            window.addEventListener('theme-event', (themeEvent) => {
+                const {themeName} = themeEvent;
+
+                switch (themeName) {
+                    case 'light':
+                        setMetaThemeColor('#f00');
+                        break;
+                    case 'dark':
+                        setMetaThemeColor('#0f0');
+                        break;
+                    default:
+                        break;
+                }
+
+                console.log(`${themeName}`);
+                document.documentElement.setAttribute('color-mode', themeName);
+            });
         </script>
     </body>
 </html>
