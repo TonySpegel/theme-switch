@@ -1,12 +1,14 @@
 /**
- * Copyright © 2021 Tony Spegel
+ * Copyright © 2022 Tony Spegel
  */
 
 /**
- * DialogEvent is used to transport the targetElement
+ * DialogEvent is used to reference the targetElement
  * which has opened the ThemeSwitch component.
+ * This needs to be done to re-select it after closing 
+ * the dialog.
  * 
- * Dispatching:
+ * Dispatching on the host site:
  * 
  * document
  *     .querySelector('#btn-theme-selection')
