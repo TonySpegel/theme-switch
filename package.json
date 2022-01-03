@@ -5,6 +5,7 @@
   "main": "theme-switch.js",
   "module": "theme-switch.js",
   "type": "module",
+  "types": "./*.d.ts",
   "scripts": {
     "build": "tsc",
     "build:watch": "tsc --watch",
