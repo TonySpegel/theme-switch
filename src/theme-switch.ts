@@ -105,7 +105,7 @@ export class ThemeSwitch extends LitElement {
             top: 0;
             width: 100%;
             height: 100%;
-            z-index: 1;
+            z-index: 1000;
             background-color: var(
                 --backdrop-color,
                 hsla(260deg, 55%, 35%, 19%)
@@ -127,6 +127,8 @@ export class ThemeSwitch extends LitElement {
             position: absolute;
             left: 50%;
             top: 50%;
+
+            z-index: 1000;
 
             outline: none;
             border: 3px solid var(--surface-2);
