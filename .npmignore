@@ -1,0 +1,25 @@
+node_modules/
+/lib/
+/test/
+/docs/
+/docs-src/
+/dev/
+/.vscode/
+web-dev-server.config.js
+web-test-runner.config.js
+
+.eleventy.cjs                
+.eslintignore                
+.eslintrc.json               
+.prettierrc.json  
+rollup.config.js
+
+custom-elements.json
+# top level source
+theme-switch.js
+theme-switch.d.ts
+theme-switch.d.ts.map
+DialogEvent.d.ts
+DialogEvent.d.ts.map
+ThemeEvent.d.ts
+ThemeEvent.d.ts.map
