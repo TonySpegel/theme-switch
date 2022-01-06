@@ -31,13 +31,18 @@ interface themeStateInterface {
     checked: boolean;
 }
 
-const readPreference = (setting: string): string | null => {
+const readSetting = (setting: string): string | null => {
     return localStorage.getItem(setting);
 };
 
-const savePreference = (theme: string): void => {
-    localStorage.setItem('theme-preference', theme);
+const saveSetting = (setting: string, value: string): void => {
+    localStorage.setItem(setting, value);
 };
+
+const deleteSetting = (setting: string): void => {
+    localStorage.removeItem(setting);
+};
+
 /**
  * These are default themes most users will use
  */
@@ -73,6 +78,7 @@ export class ThemeSwitch extends LitElement {
 
         ::slotted(h2) {
             margin: 0;
+            color: var(--text-2);
         }
 
         ::slotted(#read-more) {
@@ -81,14 +87,15 @@ export class ThemeSwitch extends LitElement {
             justify-content: center;
             border-radius: 50%;
             padding: 4px;
-            width: 20px;
-            aspect-ratio: 1 / 1;
+            width: 30px;
+            height: 30px;
             text-decoration: none;
 
             color: var(--text-2);
             transition: transform 50ms ease-in-out,
                 background-color 100ms ease-in-out;
             background-color: var(--surface-3);
+            box-sizing: border-box;
         }
 
         ::slotted(a#read-more:hover),
@@ -96,7 +103,7 @@ export class ThemeSwitch extends LitElement {
             background-color: var(--surface-2);
         }
 
-        .dialog-backdrop {
+        #dialog-backdrop {
             display: flex;
             align-items: center;
             justify-content: center;
@@ -105,7 +112,7 @@ export class ThemeSwitch extends LitElement {
             top: 0;
             width: 100%;
             height: 100%;
-            z-index: 1000;
+            z-index: 999;
             background-color: var(
                 --backdrop-color,
                 hsla(260deg, 55%, 35%, 19%)
@@ -113,7 +120,7 @@ export class ThemeSwitch extends LitElement {
             backdrop-filter: blur(var(--blur-amount, 5px));
         }
 
-        .dialog-backdrop[aria-hidden='true'] {
+        #dialog-backdrop[aria-hidden='true'] {
             display: none;
         }
         /**
@@ -138,7 +145,7 @@ export class ThemeSwitch extends LitElement {
 
             transform: translate(-50%, -50%);
 
-            background-color: white;
+            background-color: var(--surface-5);
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19),
                 0 6px 6px rgba(0, 0, 0, 0.23);
 
@@ -155,13 +162,19 @@ export class ThemeSwitch extends LitElement {
             color: var(--text-1);
         }
 
+        label {
+            color: var(--text-1);
+            cursor: pointer;
+            text-transform: capitalize;
+        }
+
         .themes {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
             gap: calc(var(--base-gap) / 2);
-            padding: calc(var(--base-gap) / 2);
-            border: 1px solid lavender;
+            border: 1px solid var(--surface-3);
             border-radius: var(--base-radius);
+            padding: calc(var(--base-gap) / 2);
         }
 
         .theme-wrapper {
@@ -172,16 +185,6 @@ export class ThemeSwitch extends LitElement {
 
             border-radius: var(--base-radius);
             padding: calc(var(--base-gap) / 2);
-        }
-
-        .theme-wrapper > label {
-            color: var(--text-1);
-            cursor: pointer;
-            text-transform: capitalize;
-        }
-
-        .radio[aria-checked='true'].inner-circle {
-            background-color: var(--surface-1);
         }
 
         .circle-wrapper {
@@ -197,7 +200,7 @@ export class ThemeSwitch extends LitElement {
             grid-area: circle;
             z-index: 1;
 
-            background-color: var(--surface-4);
+            background-color: var(--circle-bg);
             border-color: var(--surface-2);
         }
 
@@ -209,7 +212,8 @@ export class ThemeSwitch extends LitElement {
             width: 50%;
             aspect-ratio: 1;
 
-            background-color: var(--surface-4);
+            background-color: var(--circle-wave);
+            opacity: 0.04;
             transition: transform 0.4s cubic-bezier(0.54, 1.5, 0.38, 1.2);
         }
 
@@ -219,7 +223,8 @@ export class ThemeSwitch extends LitElement {
             width: 60%;
             aspect-ratio: 1;
 
-            border: 2px solid var(--surface-1);
+            /* border: 2px solid var(--surface-1); */
+            border: 2px solid var(--circle-border);
 
             transition: transform 0.4s cubic-bezier(0.54, 1.5, 0.38, 1.2);
             outline: none;
@@ -228,6 +233,11 @@ export class ThemeSwitch extends LitElement {
         .radio:hover + .outer-circle,
         .radio:focus + .outer-circle {
             transform: scale(2);
+        }
+
+        .radio[aria-checked='true'].inner-circle {
+            /* background-color: var(--surface-3); */
+            background-color: var(--circle-checked);
         }
 
         .save {
@@ -274,13 +284,13 @@ export class ThemeSwitch extends LitElement {
      */
     // Used to toggle the dialog's visibility
     @state()
-    private dialogHidden = false;
+    private dialogHidden = true;
     // Represents radio buttons to select a theme
     @state()
     private themes: themeStateInterface[] = [];
     // If it's allowed to write to localStorage
     @state()
-    private saveSelection = true;
+    private saveSelection = false;
     /**
      * Use availableThemes='["🐢", "🦕", "🐸"]' or don't
      * and rely on default themes
@@ -341,8 +351,17 @@ export class ThemeSwitch extends LitElement {
             // When this is done we are ready so focus the first element
             this.getTabElements()[0].focus();
         });
-        // Read a users preference from localStorage
-        const preference = readPreference('theme-preference');
+        // Read user settings from localStorage
+        const preference = readSetting('theme-preference');
+        const saveSelection = readSetting('save-selection');
+        /**
+         * Try reading a boolean value from localStorage
+         */
+        try {
+            this.saveSelection = JSON.parse(saveSelection || '') as boolean;
+        } catch (e) {
+            this.saveSelection = false;
+        }
         /**
          * If themes have been configured through
          * <theme-switch availableThemes='["🐢", "🦕", "🐸"]'></theme-switch>
@@ -367,6 +386,7 @@ export class ThemeSwitch extends LitElement {
          * default to 0 if none was found
          */
         this.updateThemeState(index === -1 ? 0 : index);
+        this.lastIndex = this.themes.length - 1;
     }
     /**
      * Invoked when a component is removed from the document's DOM.
@@ -462,7 +482,7 @@ export class ThemeSwitch extends LitElement {
                     this.focusElement(el, index);
                 }}"
             ></div>
-            <div class="dialog-backdrop" aria-hidden="${this.dialogHidden}">
+            <div aria-hidden="${this.dialogHidden}" id="dialog-backdrop">
                 <div
                     @keydown="${(event: KeyboardEvent) => {
                         if (event.key === 'Escape') {
@@ -492,9 +512,9 @@ export class ThemeSwitch extends LitElement {
                                                 this.updateThemeState(index);
                                                 // Save selection if user has agreed to do so
                                                 if (this.saveSelection) {
-                                                    savePreference(theme.name);
+                                                    saveSetting('theme-preference', theme.name);
                                                 }
-
+                                                // Send event which theme has been selected
                                                 window.dispatchEvent(
                                                     new ThemeEvent(theme.name),
                                                 );
@@ -518,6 +538,7 @@ export class ThemeSwitch extends LitElement {
                                             id="${theme.name}"
                                             role="radio"
                                             tabindex=${theme.checked ? 0 : -1}
+                                            title="${theme.name}-Theme aktivieren"
                                         ></button>
                                         <div class="outer-circle"></div>
                                     </div>
@@ -535,6 +556,17 @@ export class ThemeSwitch extends LitElement {
                             <input
                                 ?checked=${this.saveSelection}
                                 @click=${() => {
+                                    if (this.saveSelection === false) {
+                                        const {name} = this.themes.filter(
+                                            (theme) => theme.checked === true,
+                                        )[0];
+                                        saveSetting('save-selection', 'true');
+                                        saveSetting('theme-preference', name);
+                                    } else {
+                                        deleteSetting('save-selection');
+                                        deleteSetting('theme-preference');
+                                    }
+
                                     this.saveSelection = !this.saveSelection;
                                 }}
                                 id="save-selection"
@@ -545,15 +577,6 @@ export class ThemeSwitch extends LitElement {
                                 Auswahl speichern
                             </label>
                         </div>
-                        <!-- <a
-                            class="dialog-control"
-                            href="/about"
-                            id="read-more"
-                            target="_blank"
-                            title="Was wird gespeichert?"
-                        >
-                            ?
-                        </a> -->
                         <slot name="read-more"></slot>
                     </div>
 
