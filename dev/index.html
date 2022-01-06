@@ -10,6 +10,16 @@
         <script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
         <script src="../node_modules/lit/polyfill-support.js"></script>
         <script type="module" src="../theme-switch.js"></script>
+        <script>
+            // Reade theme preference from localStorage
+            const themePreference = localStorage.getItem('theme-preference');
+            // Set theme if one is present in localStorage
+            if (themePreference !== null) {
+                document
+                    .querySelector('html')
+                    .setAttribute('color-mode', themePreference);
+            }
+        </script>
         <style>
             * {
                 --base-gap: 16px;
@@ -32,18 +42,21 @@
                     55%,
                     1
                 );
+
                 --surface-2-light: hsla(
                     var(--hue-light),
                     var(--sat-light),
                     74%,
                     1
                 );
+
                 --surface-3-light: hsla(
                     var(--hue-light),
                     var(--sat-light),
                     84%,
                     1
                 );
+
                 --surface-4-light: hsla(
                     var(--hue-light),
                     var(--sat-light),
@@ -51,10 +64,25 @@
                     1
                 );
 
+                --surface-5-light: var(--surface-4-light);
+
+                --circle-bg-light: var(--surface-4-light);
+                --circle-wave-light: #000;
+
                 --surface-1-dark: hsla(var(--hue-light), 56%, 10%, 1);
                 --surface-2-dark: hsla(var(--hue-light), 60%, 15%, 1);
                 --surface-3-dark: hsla(var(--hue-light), 60%, 20%, 1);
                 --surface-4-dark: hsla(var(--hue-light), 60%, 25%, 1);
+                --surface-5-dark: hsl(262, 86%, 8%);
+
+                --circle-wave-dark: #fff;
+                --circle-bg-dark: #2a1d5445;
+  
+                box-sizing: border-box;
+            }
+
+            theme-switch {
+                --base-gap: 16px;
             }
 
             :root {
@@ -63,9 +91,15 @@
                 --surface-2: var(--surface-2-light);
                 --surface-3: var(--surface-3-light);
                 --surface-4: var(--surface-4-light);
+                --surface-5: var(--surface-4-light);
 
                 --text-1: hsl(281deg, 100%, 16%);
                 --text-2: hsl(281deg, 100%, 16%);
+
+                --circle-bg: var(--circle-bg-light);
+                --circle-border: var(--surface-1-light);
+                --circle-checked: var(--surface-2-light);
+                --circle-wave: var(--circle-wave-light);
             }
 
             :root[color-mode='light'] {
@@ -74,9 +108,15 @@
                 --surface-2: var(--surface-2-light);
                 --surface-3: var(--surface-3-light);
                 --surface-4: var(--surface-4-light);
+                --surface-5: var(--surface-4-light);
 
                 --text-1: hsl(281deg, 100%, 16%);
                 --text-2: hsl(281deg, 100%, 16%);
+
+                --circle-bg: var(--circle-bg-light);
+                --circle-border: var(--surface-1-light);
+                --circle-checked: var(--surface-2-light);
+                --circle-wave: var(--circle-wave-light);
             }
 
             @media (prefers-color-scheme: dark) {
@@ -86,9 +126,15 @@
                     --surface-2: var(--surface-2-dark);
                     --surface-3: var(--surface-3-dark);
                     --surface-4: var(--surface-4-dark);
+                    --surface-5: var(--surface-5-dark);
 
-                    --text-1: var(--surface-1);
+                    --text-1: #fff;
                     --text-2: #fff;
+
+                    --circle-bg: var(--circle-bg-dark);
+                    --circle-border: #eedcf530;
+                    --circle-checked: var(--surface-5-dark);
+                    --circle-wave: var(--circle-wave-dark);
                 }
             }
 
@@ -98,9 +144,15 @@
                 --surface-2: var(--surface-2-dark);
                 --surface-3: var(--surface-3-dark);
                 --surface-4: var(--surface-4-dark);
+                --surface-5: var(--surface-5-dark);
 
-                --text-1: var(--surface-1);
+                --text-1: #fff;
                 --text-2: #fff;
+
+                --circle-bg: var(--circle-bg-dark);
+                --circle-border: #eedcf530;
+                --circle-checked: var(--surface-3-dark);
+                --circle-wave: var(--circle-wave-dark);
             }
 
             body {
