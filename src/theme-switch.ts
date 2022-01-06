@@ -213,7 +213,7 @@ export class ThemeSwitch extends LitElement {
             aspect-ratio: 1;
 
             background-color: var(--circle-wave);
-            opacity: 0.04;
+            opacity: 0.1;
             transition: transform 0.4s cubic-bezier(0.54, 1.5, 0.38, 1.2);
         }
 
