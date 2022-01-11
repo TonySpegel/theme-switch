@@ -1,6 +1,35 @@
-# LitElement TypeScript starter
+# &lt;theme-switch> a web component build with Lit 🔥
+Switch your theme with style
 
-This project includes a sample component using LitElement with TypeScript.
+## About
+&lt;theme-switch> is a modal dialog which enables users to switch between themes. 
+It is build as a web compoment with Lit by using this [this starter project](https://github.com/lit/lit-element-starter-ts).
+
+### Features
+- Configurable themes
+- Close the dialog by pressing <kbd>Esc</kbd>
+- Re-focus the element which has opened the dialog after closing it again
+- Trap focus inside the dialog
+- Select the next theme by using <kbd>Tab</kbd>, <kbd>&#8594;</kbd>, <kbd>&#8595;</kbd>
+- Select the previous theme by using <kbd>Shift + Tab</kbd>, <kbd>&#8592;</kbd>, <kbd>&#8593;</kbd>
+- Manage settings via `localStorage`
+  - `save-selection`: `true` or `false`
+  - `theme-preference`: a string value of the theme which is saved (e. g. `frog-green-theme`) 
+
+## Configuration
+Set which themes are displayed by using the `availableThemes` property:
+```html
+<theme-switch availableThemes='["day", "night"]'></theme-switch>
+<theme-switch availableThemes='["🐢", "🦕", "🐸"]'></theme-switch>
+<theme-switch></theme-switch>
+```
+If that property is not set three default values will be used instead
+- `auto`: to use the current OS theme which is either a light or dark theme
+- `light`: usually light and friendly colors
+- `dark`: darker and more comfy shades to reduce eye strain
+
+## Prerequisites
+Install Node with NPM.
 
 ## Setup
 
@@ -12,9 +41,9 @@ npm i
 
 ## Build
 
-This sample uses the TypeScript compiler to produce JavaScript that runs in modern browsers.
+This project uses the TypeScript compiler to produce JavaScript that runs in modern browsers.
 
-To build the JavaScript version of your component:
+To build the JavaScript version of this component youd would need to run:
 
 ```bash
 npm run build
@@ -28,31 +57,9 @@ npm run build:watch
 
 Both the TypeScript compiler and lit-analyzer are configured to be very strict. You may want to change `tsconfig.json` to make them less strict.
 
-## Testing
-
-This sample uses modern-web.dev's
-[@web/test-runner](https://www.npmjs.com/package/@web/test-runner) along with
-Mocha, Chai, and some related helpers for testing. See the
-[modern-web.dev testing documentation](https://modern-web.dev/docs/test-runner/overview) for
-more information.
-
-Tests can be run with the `test` script, which will run your tests against Lit's development mode (with more verbose errors) as well as against Lit's production mode:
-
-```bash
-npm test
-```
-
-For local testing during development, the `test:dev:watch` command will run your tests in Lit's development mode (with verbose errors) on every change to your source files:
-
-```bash
-npm test:watch
-```
-
-Alternatively the `test:prod` and `test:prod:watch` commands will run your tests in Lit's production mode.
-
 ## Dev Server
 
-This sample uses modern-web.dev's [@web/dev-server](https://www.npmjs.com/package/@web/dev-server) for previewing the project without additional build steps. Web Dev Server handles resolving Node-style "bare" import specifiers, which aren't supported in browsers. It also automatically transpiles JavaScript and adds polyfills to support older browsers. See [modern-web.dev's Web Dev Server documentation](https://modern-web.dev/docs/dev-server/overview/) for more information.
+&lt;theme-switch> uses modern-web.dev's [@web/dev-server](https://www.npmjs.com/package/@web/dev-server) for previewing the project without additional build steps. Web Dev Server handles resolving Node-style "bare" import specifiers, which aren't supported in browsers. It also automatically transpiles JavaScript and adds polyfills to support older browsers. See [modern-web.dev's Web Dev Server documentation](https://modern-web.dev/docs/dev-server/overview/) for more information.
 
 To run the dev server and open the project in a new browser tab:
 
@@ -64,7 +71,7 @@ There is a development HTML file located at `/dev/index.html` that you can view 
 
 ## Editing
 
-If you use VS Code, we highly recommend the [lit-plugin extension](https://marketplace.visualstudio.com/items?itemName=runem.lit-plugin), which enables some extremely useful features for lit-html templates:
+If you use VS Code, it is highly recommend to have the [lit-plugin extension](https://marketplace.visualstudio.com/items?itemName=runem.lit-plugin) installed, which enables some extremely useful features for lit-html templates:
 
 - Syntax highlighting
 - Type-checking
@@ -94,6 +101,11 @@ npm run lint
 
 Prettier has not been configured to run when committing files, but this can be added with Husky and and `pretty-quick`. See the [prettier.io](https://prettier.io/) site for instructions.
 
+To format the project run:
+```bash
+npm run format
+```
+
 ## Static Site
 
 This project includes a simple website generated with the [eleventy](11ty.dev) static site generator and the templates and pages in `/docs-src`. The site is generated to `/docs` and intended to be checked in so that GitHub pages can serve the site [from `/docs` on the master branch](https://help.github.com/en/github/working-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site).
@@ -122,10 +134,14 @@ The site will usually be served at http://localhost:8000.
 
 ## Bundling and minification
 
-This starter project doesn't include any build-time optimizations like bundling or minification. We recommend publishing components as unoptimized JavaScript modules, and performing build-time optimizations at the application level. This gives build tools the best chance to deduplicate code, remove dead code, and so on.
+This component doesn't include any build-time optimizations like bundling or minification. It is recommended to publish components
+as unoptimized JavaScript modules, and performing build-time optimizations at the application level. This gives build tools the best chance to deduplicate code, remove dead code, and so on.
 
 For information on building application projects that include LitElement components, see [Build for production](https://lit.dev/docs/tools/production/) on the Lit site.
 
-## More information
+## Useful resources
 
-See [Get started](https://lit.dev/docs/getting-started/) on the Lit site for more information.
+- [Get started](https://lit.dev/docs/getting-started/) on the lit.dev site for more information.
+- [Open Web Component scaffold generators](https://open-wc.org/docs/development/generator/) (an alternative for this starter project)
+- [A11y Radio Button Design Pattern](https://www.w3.org/TR/2017/WD-wai-aria-practices-1.1-20170628/examples/radio/radio-1/radio-1.html)
+- [A11y Pattern for modals & dialogs](https://www.w3.org/TR/wai-aria-practices/examples/dialog-modal/dialog.html)
