@@ -25,14 +25,14 @@ If you would like to use this component in your project, you can install it from
 npm i theme-switch-component
 ```
 
-## Properties, slots & events
-You can configure `<theme-switch>` by using the `availableThemes` property and three slots. Its events are this components way of communicating with the host.
+## Configuration
+You can configure `<theme-switch>` by using the `availableThemes` property, three slots and some CSS variables. Its events are this components way of communicating with the host.
 
-### `availableThemes` property
+### Property `availableThemes` 
 
 | Name             | Required | Values                                           | Default                                                                                                                                                                                                                          | Description                                                                           |
 |------------------|----------|--------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------|
-| `availableThemes` | No       | Any string or emoji.<br>"light", "midnight", "🐸" | "auto", "light", "dark"<br><br>`auto`: use the current OS theme which is either a light or dark theme<br>`light`: usually light and friendly colors<br>`dark`: darker and more comfy shades to reduce eye strain (or to be cool) | These values<br>will be communicated<br>to anyone who listens <br>to the `ThemeEvent` |
+| `availableThemes` | No       | Any string or emoji.<br>"light", "midnight", "🐸" | `"auto"`, `"light"`, `"dark"`<br><br>`auto`: use the current OS theme which is either a light or dark theme<br>`light`: usually light and friendly colors<br>`dark`: darker and more comfy shades to reduce eye strain (or to be cool) | These values<br>will be communicated<br>to anyone who listens <br>to the [ThemeEvent](#themeevent) |
 
 ### Slots
 
@@ -102,6 +102,15 @@ window.addEventListener('theme-event', (themeEvent) => {
   document.documentElement.setAttribute('theme-preference', themeName);
 });
 ```
+
+### CSS variables
+
+| Variable           | Purpose                                 | Default value          |
+|--------------------|-----------------------------------------|------------------------|
+| `--base-gap`       | Spacing for paddings, margins & gaps    | `8px`                  |
+| `--base-radius`    | Border radius for different elements    | `8px`                  |
+| `--blur-amount`    | Amount for blurring the dialog backdrop | `5px`                  |
+| `--backdrop-color` | Color of the dialog backdrop            | `hsla(0, 0, 78%, 0.1)` |
 
 ## WIP: Defining a theme
 
