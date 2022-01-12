@@ -3,7 +3,7 @@ Switch your theme with style
 
 ## About
 &lt;theme-switch> is a modal dialog which enables users to switch between themes. 
-It is build as a web compoment with Lit by using this [this starter project](https://github.com/lit/lit-element-starter-ts).
+It is build as a web compoment with [Lit](https://lit.dev/) by using this [this starter project](https://github.com/lit/lit-element-starter-ts).
 
 ### Features
 - Configurable themes
@@ -16,20 +16,94 @@ It is build as a web compoment with Lit by using this [this starter project](htt
   - `save-selection`: `true` or `false`
   - `theme-preference`: a string value of the theme which is saved (e. g. `frog-green-theme`) 
 
-## Configuration
-Set which themes are displayed by using the `availableThemes` property:
-```html
-<theme-switch availableThemes='["day", "night"]'></theme-switch>
-<theme-switch availableThemes='["🐢", "🦕", "🐸"]'></theme-switch>
-<theme-switch></theme-switch>
-```
-If that property is not set three default values will be used instead
-- `auto`: to use the current OS theme which is either a light or dark theme
-- `light`: usually light and friendly colors
-- `dark`: darker and more comfy shades to reduce eye strain
-
 ## Prerequisites
 Install Node with NPM.
+
+## Installation
+If you would like to use this component in your project, you can install it from [npm](https://www.npmjs.com/package/theme-switch-component)
+```bash
+npm i theme-switch-component
+```
+
+## Properties, slots & events
+You can configure `<theme-switch>` by using the `availableThemes` property and three slots. Its events are this components way of communicating with the host.
+
+### `availableThemes` property
+
+| Name             | Required | Values                                           | Default                                                                                                                                                                                                                          | Description                                                                           |
+|------------------|----------|--------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------|
+| `availableThemes` | No       | Any string or emoji.<br>"light", "midnight", "🐸" | "auto", "light", "dark"<br><br>`auto`: use the current OS theme which is either a light or dark theme<br>`light`: usually light and friendly colors<br>`dark`: darker and more comfy shades to reduce eye strain (or to be cool) | These values<br>will be communicated<br>to anyone who listens <br>to the `ThemeEvent` |
+
+### Slots
+
+Slots are identified by their name attribute, and allow you to define placeholders in your template that can be filled with any markup fragment you want when the element is used in the markup.
+These placeholder are meant to be used to display two headings and 
+a _"read more"_ link but you could place anything you would like to.
+
+| Name          | Meaning                                                                                                           | Example value                                                                                                |
+|---------------|-------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------|
+| `heading`     | The "title" of the dialog                                                                                         | `<h2 slot="heading">Theme Selection</h2>`                                                              |
+| `sub-heading` | Short explanation what this dialog does                                                                           | `<span slot="sub-heading">Choose a theme for your site</span>`                                  |
+| `read-more`   | Can be used to point to your privacy statement<br>section to explain what values are saved by <br>this component. | `<a slot="read-more" href="/privacy-statement" target="_blank" title="What data will be saved?">?</a>` |                                 |
+
+### Examples
+Using the default values
+```html
+<theme-switch>
+  <h2 slot="heading">Theme Selection</h2>
+  <span slot="sub-heading">Choose a theme for your site</span>
+  <a
+    slot="read-more"
+    href="/privacy-statement"
+    id="read-more"
+    target="_blank"
+    title="What data will be saved?"
+  >
+    ? 
+  </a>
+</theme-switch>
+```
+Using your own set of themes
+```html
+<theme-switch availableThemes='["🐢", "🦕", "🐸"]'>
+  <!-- Slots as above -->
+</theme-switch>
+```
+### Events
+#### `DialogEvent`
+Used to open the dialog and reference the targetElement which has opened the dialog. This needs to be done to re-select the element after closing the dialog.
+```javascript
+class DialogEvent extends Event {
+  static eventName = 'dialog-event';
+  targetElement = '';
+
+  constructor(targetElement) {
+    super(DialogEvent.eventName, { bubbles: true });
+    this.targetElement = targetElement;
+  }
+}
+```
+Define an EventListener to dispatch the event
+```javascript
+document
+  .querySelector('#btn-theme-selection')
+  .addEventListener('click', (event) => {
+    const { target } = event;
+    window.dispatchEvent(new DialogEvent(target));
+  });
+```
+#### `ThemeEvent`
+Transports the name of a theme so that a host can react to it accordingly. For example one could use it to set attributes or CSS classes.
+
+```javascript
+window.addEventListener('theme-event', (themeEvent) => {
+  const { themeName } = themeEvent;
+
+  document.documentElement.setAttribute('theme-preference', themeName);
+});
+```
+
+## WIP: Defining a theme
 
 ## Setup
 
@@ -108,9 +182,9 @@ npm run format
 
 ## Static Site
 
-This project includes a simple website generated with the [eleventy](11ty.dev) static site generator and the templates and pages in `/docs-src`. The site is generated to `/docs` and intended to be checked in so that GitHub pages can serve the site [from `/docs` on the master branch](https://help.github.com/en/github/working-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site).
+This project includes a simple website generated with the [eleventy](11ty.dev) static site generator and the templates and pages in `/docs-src`. The site is generated to `/docs` and intended to be checked in so that GitHub pages can serve the site [from `/docs` on the main branch](https://help.github.com/en/github/working-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site).
 
-To enable the site go to the GitHub settings and change the GitHub Pages &quot;Source&quot; setting to &quot;master branch /docs folder&quot;.</p>
+To enable the site go to the GitHub settings and change the GitHub Pages &quot;Source&quot; setting to &quot;main branch /docs folder&quot;.</p>
 
 To build the site, run:
 
@@ -137,7 +211,7 @@ The site will usually be served at http://localhost:8000.
 This component doesn't include any build-time optimizations like bundling or minification. It is recommended to publish components
 as unoptimized JavaScript modules, and performing build-time optimizations at the application level. This gives build tools the best chance to deduplicate code, remove dead code, and so on.
 
-For information on building application projects that include LitElement components, see [Build for production](https://lit.dev/docs/tools/production/) on the Lit site.
+For information on building application projects that include LitElement components, see [Build for production](https://lit.dev/docs/tools/production/) on the Lit site or at the [open web components site](https://open-wc.org/docs/building/rollup/).
 
 ## Useful resources
 
