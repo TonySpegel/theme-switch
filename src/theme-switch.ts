@@ -70,15 +70,59 @@ export class ThemeSwitch extends LitElement {
         :host {
             font-family: var(--font-fam, sans-serif);
 
+            /**
+             * Dialog Border
+             * Dialog Hintergrund
+             * Überschrift
+             * Zwischenüberschrift
+             * Radio Border
+             * Radio Hintergrund
+             * Radio Hintergrund Active
+             * Control Hintergrund 
+             * Control Hintergrund Interaction
+             */
+
+            --froggo-950: #002b1f;
+            --froggo-900: #064e3b;
+            --froggo-800: #065f46;
+            --froggo-700: #047857;
+            --froggo-600: #059669;
+            --froggo-500: #10b981;
+            --froggo-400: #34d399;
+            --froggo-300: #6ee7b7;
+            --froggo-200: #a7f3d0;
+            --froggo-100: #d1fae5;
+            --froggo-50: #ecfdf5;
+
             --base-gap: 8px;
             --base-radius: 8px;
             --blur-amount: 5px;
             --backdrop-color: hsla(0, 0, 78%, 0.1);
+
+            --text-color-1: var(--froggo-950);
+            --text-color-2: var(--froggo-900);
+
+            /* Dialog */
+            --dialog-bg-color: var(--froggo-50);
+            --dialog-border-color: var(--froggo-500);
+            /* Themes Wrapper */
+            --themes-border-color: var(--froggo-400);
+            /* Radio Buttons */
+            --circle-bg-color: var(--froggo-100);
+            --circle-bg-color-checked: var(--froggo-300);
+            --circle-border-color: var(--froggo-500);
+            /* Control elements */
+            --control-color: var(--froggo-400);
+            --control-interaction-color: var(--froggo-500);
         }
 
         ::slotted(h2) {
             margin: 0;
-            color: var(--text-2);
+            color: var(--text-color-1);
+        }
+
+        ::slotted(span) {
+            color: var(--text-color-2);
         }
 
         ::slotted(#read-more) {
@@ -91,16 +135,16 @@ export class ThemeSwitch extends LitElement {
             height: 30px;
             text-decoration: none;
 
-            color: var(--text-2);
+            color: var(--text-color-1);
             transition: transform 50ms ease-in-out,
                 background-color 100ms ease-in-out;
-            background-color: var(--surface-3);
+            background-color: var(--control-color);
             box-sizing: border-box;
         }
 
         ::slotted(a#read-more:hover),
         ::slotted(a#read-more:focus) {
-            background-color: var(--surface-2);
+            background-color: var(--control-interaction-color);
         }
 
         #dialog-backdrop {
@@ -138,14 +182,14 @@ export class ThemeSwitch extends LitElement {
             z-index: 1000;
 
             outline: none;
-            border: 3px solid var(--surface-2);
+            border: 3px solid var(--dialog-border-color);
             border-radius: calc(var(--base-radius) * 2);
             padding: calc(var(--base-gap) * 1.5);
             width: 250px;
 
             transform: translate(-50%, -50%);
 
-            background-color: var(--surface-5);
+            background-color: var(--dialog-bg-color);
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19),
                 0 6px 6px rgba(0, 0, 0, 0.23);
 
@@ -156,14 +200,8 @@ export class ThemeSwitch extends LitElement {
             display: none;
         }
 
-        h2 {
-            margin: 0;
-            color: hsla(281, 100%, 21%, 1);
-            color: var(--text-1);
-        }
-
         label {
-            color: var(--text-1);
+            color: var(--text-color-1);
             cursor: pointer;
             text-transform: capitalize;
         }
@@ -172,12 +210,12 @@ export class ThemeSwitch extends LitElement {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
             gap: calc(var(--base-gap) / 2);
-            border: 1px solid var(--surface-3);
+            border: 1px solid var(--themes-border-color);
             border-radius: var(--base-radius);
             padding: calc(var(--base-gap) / 2);
         }
 
-        .theme-wrapper {
+        .theme {
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -200,8 +238,8 @@ export class ThemeSwitch extends LitElement {
             grid-area: circle;
             z-index: 1;
 
-            background-color: var(--circle-bg);
-            border-color: var(--surface-2);
+            background-color: var(--circle-bg-color);
+            border-color: var(--circle-border-color);
         }
 
         .outer-circle {
@@ -223,8 +261,7 @@ export class ThemeSwitch extends LitElement {
             width: 60%;
             aspect-ratio: 1;
 
-            /* border: 2px solid var(--surface-1); */
-            border: 2px solid var(--circle-border);
+            border: 2px solid var(--circle-border-color);
 
             transition: transform 0.4s cubic-bezier(0.54, 1.5, 0.38, 1.2);
             outline: none;
@@ -237,7 +274,8 @@ export class ThemeSwitch extends LitElement {
 
         .radio[aria-checked='true'].inner-circle {
             /* background-color: var(--surface-3); */
-            background-color: var(--circle-checked);
+            /* background-color: var(--circle-checked); */
+            background-color: var(--circle-bg-color-checked);
         }
 
         .save {
@@ -248,15 +286,15 @@ export class ThemeSwitch extends LitElement {
         }
 
         .dialog-control {
-            color: var(--text-2);
+            color: var(--text-color-1);
             transition: transform 50ms ease-in-out,
                 background-color 100ms ease-in-out;
-            background-color: var(--surface-3);
+            background-color: var(--control-color);
         }
 
         .dialog-control:hover,
         .dialog-control:focus {
-            background-color: var(--surface-2);
+            background-color: var(--control-interaction-color);
         }
 
         #btn-close-dialog {
@@ -284,7 +322,7 @@ export class ThemeSwitch extends LitElement {
      */
     // Used to toggle the dialog's visibility
     @state()
-    private dialogHidden = true;
+    private dialogHidden = false;
     // Represents radio buttons to select a theme
     @state()
     private themes: themeStateInterface[] = [];
@@ -504,7 +542,7 @@ export class ThemeSwitch extends LitElement {
                     <div role="radiogroup" class="themes">
                         ${this.themes.map((theme, index) => {
                             return html`
-                                <div class="theme-wrapper">
+                                <div class="theme">
                                     <div class="circle-wrapper">
                                         <button
                                             @click="${() => {
@@ -512,7 +550,10 @@ export class ThemeSwitch extends LitElement {
                                                 this.updateThemeState(index);
                                                 // Save selection if user has agreed to do so
                                                 if (this.saveSelection) {
-                                                    saveSetting('theme-preference', theme.name);
+                                                    saveSetting(
+                                                        'theme-preference',
+                                                        theme.name,
+                                                    );
                                                 }
                                                 // Send event which theme has been selected
                                                 window.dispatchEvent(
