@@ -2,22 +2,14 @@
 Switch your theme with style
 
 ## About
-&lt;theme-switch> is a modal dialog which enables users to switch between themes. 
+`<theme-switch>` is a modal dialog which enables users to switch between themes. 
 It is build as a web compoment with [Lit](https://lit.dev/) by using this [this starter project](https://github.com/lit/lit-element-starter-ts).
 
 ### Features
-- Configurable themes
-- Close the dialog by pressing <kbd>Esc</kbd>
-- Re-focus the element which has opened the dialog after closing it again
-- Trap focus inside the dialog
-- Select the next theme by using <kbd>Tab</kbd>, <kbd>&#8594;</kbd>, <kbd>&#8595;</kbd>
-- Select the previous theme by using <kbd>Shift + Tab</kbd>, <kbd>&#8592;</kbd>, <kbd>&#8593;</kbd>
-- Manage settings via `localStorage`
-  - `save-selection`: `true` or `false`
-  - `theme-preference`: a string value of the theme which is saved (e. g. `frog-green-theme`) 
-
-## Prerequisites
-Install Node with NPM.
+- Configurable UI
+- a11y friendly keyboard navigation
+- Focus restoration
+- Event driven communication between host and component
 
 ## Installation
 If you would like to use this component in your project, you can install it from [npm](https://www.npmjs.com/package/theme-switch-component)
@@ -26,7 +18,7 @@ npm i theme-switch-component
 ```
 
 ## Configuration
-You can configure `<theme-switch>` by using the `availableThemes` property, three slots and some CSS variables. Its events are this components way of communicating with the host.
+You can configure `<theme-switch>` by using the `availableThemes` property, three [slots](#slots) and some [CSS variables](#css-variables). Its [events](#events) are this components way of communication.
 
 ### Property `availableThemes` 
 
@@ -34,17 +26,22 @@ You can configure `<theme-switch>` by using the `availableThemes` property, thre
 |------------------|----------|--------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------|
 | `availableThemes` | No       | Any string or emoji.<br>"light", "midnight", "🐸" | `"auto"`, `"light"`, `"dark"`<br><br>`auto`: use the current OS theme which is either a light or dark theme<br>`light`: usually light and friendly colors<br>`dark`: darker and more comfy shades to reduce eye strain (or to be cool) | These values<br>will be communicated<br>to anyone who listens <br>to the [ThemeEvent](#themeevent) |
 
+<!-- // TODO -->
+- Manage settings via `localStorage`
+  - `save-selection`: `true` or `false`
+  - `theme-preference`: a string value of the theme which is saved (e. g. `frog-green-theme`) 
+
 ### Slots
 
 Slots are identified by their name attribute, and allow you to define placeholders in your template that can be filled with any markup fragment you want when the element is used in the markup.
 These placeholder are meant to be used to display two headings and 
 a _"read more"_ link but you could place anything you would like to.
 
-| Name          | Meaning                                                                                                           | Example value                                                                                                |
-|---------------|-------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------|
-| `heading`     | The "title" of the dialog                                                                                         | `<h2 slot="heading">Theme Selection</h2>`                                                              |
-| `sub-heading` | Short explanation what this dialog does                                                                           | `<span slot="sub-heading">Choose a theme for your site</span>`                                  |
-| `read-more`   | Can be used to point to your privacy statement<br>section to explain what values are saved by <br>this component. | `<a slot="read-more" href="/privacy-statement" target="_blank" title="What data will be saved?">?</a>` |                                 |
+| Name          | Meaning                   | Example value                                                 |
+|---------------|---------------------------|---------------------------------------------------------------|
+| `heading`     | The "title" of the dialog |`<h2 slot="heading">Theme Selection</h2>`                      |
+| `sub-heading` | Short explanation         |`<span slot="sub-heading">Choose a theme for your site</span>` |
+| `read-more`   | Additional information    |`<a slot="read-more" href="/privacy-statement" target="_blank" title="What data will be saved?">?</a>` |
 
 ### Examples
 Using the default values
@@ -70,8 +67,11 @@ Using your own set of themes
 </theme-switch>
 ```
 ### Events
+Events are used to open the dialog and to restore focus after closing it again. This components also
+communicates the selected theme.
+
 #### `DialogEvent`
-Used to open the dialog and reference the targetElement which has opened the dialog. This needs to be done to re-select the element after closing the dialog.
+Used to open the dialog and restore focus on the opener element when closing it again.
 ```javascript
 class DialogEvent extends Event {
   static eventName = 'dialog-event';
@@ -105,14 +105,53 @@ window.addEventListener('theme-event', (themeEvent) => {
 
 ### CSS variables
 
-| Variable           | Purpose                                 | Default value          |
-|--------------------|-----------------------------------------|------------------------|
-| `--base-gap`       | Spacing for paddings, margins & gaps    | `8px`                  |
-| `--base-radius`    | Border radius for different elements    | `8px`                  |
-| `--blur-amount`    | Amount for blurring the dialog backdrop | `5px`                  |
-| `--backdrop-color` | Color of the dialog backdrop            | `hsla(0, 0, 78%, 0.1)` |
+| Variable                     | Purpose                                     | Default value            |
+|------------------------------|---------------------------------------------|--------------------------|
+| `--base-gap`                 | Spacing for paddings, margins & gaps        | `8px`                    |
+| `--base-radius`              | Border radius for different elements        | `8px`                    |
+| `--blur-amount`              | Amount for blurring the dialog backdrop     | `5px`                    |
+| `--backdrop-color`           | Color of the dialog backdrop                | `hsla(0, 0, 78%, 0.1)`   |
+| `--text-color-1`             | Color for controls elements & labels        | `hsla(0, 0, 78%, 0.1)`   |
+| `--dialog-bg-color`          | Dialog background color                     | `--froggo-50`: `#ecfdf5` |
+| `--dialog-border-color`      | Dialog border color                         | `--froggo-500`: `#10b981`|
+| `--themes-border-color`      | Themes border color                         | `--froggo-400`: `#34d399`|
+| `--circle-bg-color`          | Radio button background color               | `--froggo-100`: `#d1fae5`|
+| `--circle-bg-color-checked`  | Radio button background color when checked  | `--froggo-100`: `#d1fae5`|
+| `--circle-border-color`      | Radio button border color                   | `--froggo-500`: `#ecfdf5`|
+| `--control-color`            | Color for control elements (buttons, links) | `--froggo-400`: `#34d399`|
+| `--control-interaction-color`| ^when using `:hover` or `:focus`            | `--froggo-500`: `#10b981`|
 
-## WIP: Defining a theme
+## Defining themes
+
+The overall styling is based on this awesome article ([Building a color scheme
+](https://web.dev/building-a-color-scheme/)) by [Adam Argyle](https://web.dev/authors/adamargyle/).
+A list of variables can be found in this [section](#css-variables).
+
+```scss
+:root,
+:root[theme-preference='light'] {
+    color-scheme: light;
+    --surface-1: var(--surface-1-light);
+    --surface-2: var(--surface-2-light);
+    --surface-3: var(--surface-3-light);
+    --surface-4: var(--surface-4-light);
+    --surface-5: var(--surface-4-light);
+
+    --text-1: hsl(281deg, 100%, 16%);
+    --text-2: hsl(281deg, 100%, 16%);
+
+    --circle-bg: var(--circle-bg-light);
+    --circle-border: var(--surface-1-light);
+    --circle-checked: var(--surface-2-light);
+    --circle-wave: var(--circle-wave-light);
+
+    --glass-tint: var(--glass-tint-light);
+    --glass-tint-2: var(--shade-50-glass);
+
+    --logo-bg: var(--logo-bg-light);
+    --border-color: none;
+}
+```
 
 ## Setup
 
