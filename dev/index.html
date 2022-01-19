@@ -17,7 +17,7 @@
             if (themePreference !== null) {
                 document
                     .querySelector('html')
-                    .setAttribute('color-mode', themePreference);
+                    .setAttribute('theme-preference', themePreference);
             }
         </script>
         <style>
@@ -102,7 +102,7 @@
                 --circle-wave: var(--circle-wave-light);
             }
 
-            :root[color-mode='light'] {
+            :root[theme-preference='light'] {
                 color-scheme: light;
                 --surface-1: var(--surface-1-light);
                 --surface-2: var(--surface-2-light);
@@ -138,7 +138,7 @@
                 }
             }
 
-            :root[color-mode='dark'] {
+            :root[theme-preference='dark'] {
                 color-scheme: dark;
                 --surface-1: var(--surface-1-dark);
                 --surface-2: var(--surface-2-dark);
@@ -299,8 +299,8 @@
         <main aria-hidden="true">
             <!-- <theme-switch availableThemes='["🐢", "🦕", "🐸"]'></theme-switch> -->
             <theme-switch>
-                <h2 slot="heading">Theme Auswahl</h2>
-                <span slot="sub-heading">Wähle ein Theme für die Website</span>
+                <h2 slot="heading">Theme Selection</h2>
+                <span slot="sub-heading">Choose a theme for the website</span>
                 <a
                     class="dialog-control"
                     href="/about"
@@ -393,7 +393,7 @@
                 }
 
                 console.log(`${themeName}`);
-                document.documentElement.setAttribute('color-mode', themeName);
+                document.documentElement.setAttribute('theme-preference', themeName);
             });
         </script>
     </body>
