@@ -111,14 +111,18 @@ window.addEventListener('theme-event', (themeEvent) => {
 | `--text-color-1`             | Text color for the heading, controls & labels| `--purple-950`: `#2f0050`|
 | `--text-color-2`             | Text color for sub-heading                   | `--purple-900`: `#581c87`|
 | `--outline-color`            | Outline color for `:focus`                   | `#000`                   |
+| Dialog                       |
 | `--dialog-bg-color`          | Dialog background color                      | `--purple-50`: `#faf5ff` |
 | `--dialog-border-color`      | Dialog border color                          | `--purple-500`: `#a855f7`|
-| `--themes-border-color`      | Themes border color                          | `--purple-400`: `#c084fc`|
+| Radio buttons                |
+| `--themes-border-color`      | Themes wrapper border color                  | `--purple-400`: `#c084fc`|
 | `--circle-bg-color`          | Radio button background color                | `--purple-100`: `#f3e8ff`|
 | `--circle-bg-color-checked`  | Radio button background color when checked   | `--purple-300`: `#d8b4fe`|
 | `--circle-border-color`      | Radio button border color                    | `--purple-500`: `#a855f7`|
+| Control elements             |
 | `--control-color`            | Color for control elements (buttons, links)  | `--purple-300`: `#d8b4fe`|
 | `--control-interaction-color`| ^when using `:hover` or `:focus`             | `--purple-400`: `#c084fc`|
+| Checkbox                     |
 | `--checkbox-bg-color`        | Checkbox background color                    | `--purple-50`: `#faf5ff` |
 | `--checkbox-bg-color-checked`| Checkbox background color when checked       | `--purple-200`: `#e9d5ff`|
 | `--checkbox-border-color`    | Checkbox border color                        | `--purple-500`: `#a855f7`|
