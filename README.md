@@ -24,7 +24,7 @@ You can configure `<theme-switch>` by using the `availableThemes` property, thre
 
 | Name             | Required | Values                                           | Default                                                                                                                                                                                                                          | Description                                                                           |
 |------------------|----------|--------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------|
-| `availableThemes` | No       | Any string or emoji.<br>"light", "midnight", "🐸" | `"auto"`, `"light"`, `"dark"`<br><br>`auto`: use the current OS theme which is either a light or dark theme<br>`light`: usually light and friendly colors<br>`dark`: darker and more comfy shades to reduce eye strain (or to be cool) | These values<br>will be communicated<br>to anyone who listens <br>to the [ThemeEvent](#themeevent) |
+| `availableThemes` | No       | Any string or emoji.<br>"light", "🐸" | `"auto"`, `"light"`, `"dark"`<br><br>`auto`: use the current OS theme which is either a light or dark theme<br>`light`: usually light and friendly colors<br>`dark`: darker and more comfy shades to reduce eye strain (or to be cool) | These values<br>will be communicated<br>to anyone who listens <br>to the [ThemeEvent](#themeevent) |
 
 <!-- // TODO -->
 - Manage settings via `localStorage`
@@ -33,9 +33,7 @@ You can configure `<theme-switch>` by using the `availableThemes` property, thre
 
 ### Slots
 
-Slots are identified by their name attribute, and allow you to define placeholders in your template that can be filled with any markup fragment you want when the element is used in the markup.
-These placeholder are meant to be used to display two headings and 
-a _"read more"_ link but you could place anything you would like to.
+Slots allow you to define placeholders in your template that can be filled with any markup fragment you want when the element is used in the markup. They are identified by their name attribute. These placeholder are meant to be used to display a heading, a sub-heading and a _"read more"_ link but you could place anything you would like to.
 
 | Name          | Meaning                   | Example value                                                 |
 |---------------|---------------------------|---------------------------------------------------------------|
@@ -43,7 +41,7 @@ a _"read more"_ link but you could place anything you would like to.
 | `sub-heading` | Short explanation         |`<span slot="sub-heading">Choose a theme for your site</span>` |
 | `read-more`   | Additional information    |`<a slot="read-more" href="/privacy-statement" target="_blank" title="What data will be saved?">?</a>` |
 
-### Examples
+#### Slot  Examples
 Using the default values
 ```html
 <theme-switch>
@@ -67,11 +65,10 @@ Using your own set of themes
 </theme-switch>
 ```
 ### Events
-Events are used to open the dialog and to restore focus after closing it again. This components also
-communicates the selected theme.
+Events are used to open the dialog and to restore focus after closing it again. This components also communicates the selected theme to anything listening to this event.
 
 #### `DialogEvent`
-Used to open the dialog and restore focus on the opener element when closing it again.
+Used to **open the dialog** and **restore focus** on the opener element when closing it again.
 ```javascript
 class DialogEvent extends Event {
   static eventName = 'dialog-event';
@@ -105,51 +102,72 @@ window.addEventListener('theme-event', (themeEvent) => {
 
 ### CSS variables
 
-| Variable                     | Purpose                                     | Default value            |
-|------------------------------|---------------------------------------------|--------------------------|
-| `--base-gap`                 | Spacing for paddings, margins & gaps        | `8px`                    |
-| `--base-radius`              | Border radius for different elements        | `8px`                    |
-| `--blur-amount`              | Amount for blurring the dialog backdrop     | `5px`                    |
-| `--backdrop-color`           | Color of the dialog backdrop                | `hsla(0, 0, 78%, 0.1)`   |
-| `--text-color-1`             | Color for controls elements & labels        | `hsla(0, 0, 78%, 0.1)`   |
-| `--dialog-bg-color`          | Dialog background color                     | `--froggo-50`: `#ecfdf5` |
-| `--dialog-border-color`      | Dialog border color                         | `--froggo-500`: `#10b981`|
-| `--themes-border-color`      | Themes border color                         | `--froggo-400`: `#34d399`|
-| `--circle-bg-color`          | Radio button background color               | `--froggo-100`: `#d1fae5`|
-| `--circle-bg-color-checked`  | Radio button background color when checked  | `--froggo-100`: `#d1fae5`|
-| `--circle-border-color`      | Radio button border color                   | `--froggo-500`: `#ecfdf5`|
-| `--control-color`            | Color for control elements (buttons, links) | `--froggo-400`: `#34d399`|
-| `--control-interaction-color`| ^when using `:hover` or `:focus`            | `--froggo-500`: `#10b981`|
+| Variable                     | Purpose                                      | Default value            |
+|------------------------------|----------------------------------------------|--------------------------|
+| `--base-gap`                 | Spacing for paddings, margins & gaps         | `8px`                    |
+| `--base-radius`              | Border radius for different elements         | `8px`                    |
+| `--blur-amount`              | Amount for blurring the dialog backdrop      | `5px`                    |
+| `--backdrop-color`           | Color of the dialog backdrop                 | `hsla(0, 0, 78%, 0.1)`   |
+| `--text-color-1`             | Text color for the heading, controls & labels| `--purple-950`: `#2f0050`|
+| `--text-color-2`             | Text color for sub-heading                   | `--purple-900`: `#581c87`|
+| `--outline-color`            | Outline color for `:focus`                   | `#000`                   |
+| `--dialog-bg-color`          | Dialog background color                      | `--purple-50`: `#faf5ff` |
+| `--dialog-border-color`      | Dialog border color                          | `--purple-500`: `#a855f7`|
+| `--themes-border-color`      | Themes border color                          | `--purple-400`: `#c084fc`|
+| `--circle-bg-color`          | Radio button background color                | `--purple-100`: `#f3e8ff`|
+| `--circle-bg-color-checked`  | Radio button background color when checked   | `--purple-300`: `#d8b4fe`|
+| `--circle-border-color`      | Radio button border color                    | `--purple-500`: `#a855f7`|
+| `--control-color`            | Color for control elements (buttons, links)  | `--purple-300`: `#d8b4fe`|
+| `--control-interaction-color`| ^when using `:hover` or `:focus`             | `--purple-400`: `#c084fc`|
+| `--checkbox-bg-color`        | Checkbox background color                    | `--purple-50`: `#faf5ff` |
+| `--checkbox-bg-color-checked`| Checkbox background color when checked       | `--purple-200`: `#e9d5ff`|
+| `--checkbox-border-color`    | Checkbox border color                        | `--purple-500`: `#a855f7`|
+| `--checkmark-color`          | Checkmark color                              | `--purple-900`: `#581c87`|
 
 ## Defining themes
 
 The overall styling is based on this awesome article ([Building a color scheme
 ](https://web.dev/building-a-color-scheme/)) by [Adam Argyle](https://web.dev/authors/adamargyle/).
-A list of variables can be found in this [section](#css-variables).
+The basic idea is that you have to define a set of css variables for different kinds of surfaces,
+colors and shadows and swap them with another set when a condition is met. This could be your device changing its theme or you using this component.
 
-```scss
+1. Define a set of css variables for each theme:
+```css
+* {
+  /* Light theme */
+  --surface-1-light: hsla(281deg 55% 55% / 100%);
+  --surface-2-light: hsla(281deg 55% 74% / 100%);
+  /* Dark theme */
+  --surface-1-dark: hsla(281deg 56% 10% / 100%);
+  --surface-2-dark: hsla(281deg 60% 15% / 100%);
+}
+```
+2. Then define a set of css variables for your UI and its default state (this is usually the light theme).
+Using an attribute selector like I did is one way when changing the theme programmatically but you are free to use a class instead - see [`ThemeEvent`](#themeevent) for more details.
+
+```css
 :root,
 :root[theme-preference='light'] {
     color-scheme: light;
     --surface-1: var(--surface-1-light);
     --surface-2: var(--surface-2-light);
-    --surface-3: var(--surface-3-light);
-    --surface-4: var(--surface-4-light);
-    --surface-5: var(--surface-4-light);
+}
+```
+3. And another one when your theme should change to a dark theme 
+```css
+@media (prefers-color-scheme: dark) {
+  :root {
+      color-scheme: dark;
+      --surface-1: var(--surface-1-dark);
+      --surface-2: var(--surface-2-dark);
+  }
+}
+/* ^ a media query for a light color scheme is not needed as it is the default already */
 
-    --text-1: hsl(281deg, 100%, 16%);
-    --text-2: hsl(281deg, 100%, 16%);
-
-    --circle-bg: var(--circle-bg-light);
-    --circle-border: var(--surface-1-light);
-    --circle-checked: var(--surface-2-light);
-    --circle-wave: var(--circle-wave-light);
-
-    --glass-tint: var(--glass-tint-light);
-    --glass-tint-2: var(--shade-50-glass);
-
-    --logo-bg: var(--logo-bg-light);
-    --border-color: none;
+:root[color-mode='dark'] {
+  color-scheme: dark;
+  --surface-1: var(--surface-1-dark);
+  --surface-2: var(--surface-2-dark);
 }
 ```
 
