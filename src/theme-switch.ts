@@ -68,52 +68,46 @@ const upgradeToTheme = (names: string[]): themeStateInterface[] => {
 export class ThemeSwitch extends LitElement {
     static override styles = css`
         :host {
-            font-family: var(--font-fam, sans-serif);
-
-            /**
-             * Dialog Border
-             * Dialog Hintergrund
-             * Überschrift
-             * Zwischenüberschrift
-             * Radio Border
-             * Radio Hintergrund
-             * Radio Hintergrund Active
-             * Control Hintergrund 
-             * Control Hintergrund Interaction
-             */
-
-            --froggo-950: #002b1f;
-            --froggo-900: #064e3b;
-            --froggo-800: #065f46;
-            --froggo-700: #047857;
-            --froggo-600: #059669;
-            --froggo-500: #10b981;
-            --froggo-400: #34d399;
-            --froggo-300: #6ee7b7;
-            --froggo-200: #a7f3d0;
-            --froggo-100: #d1fae5;
-            --froggo-50: #ecfdf5;
+            --purple-50: #faf5ff;
+            --purple-100: #f3e8ff;
+            --purple-200: #e9d5ff;
+            --purple-300: #d8b4fe;
+            --purple-400: #c084fc;
+            --purple-500: #a855f7;
+            --purple-600: #9333ea;
+            --purple-700: #7e22ce;
+            --purple-800: #6b21a8;
+            --purple-900: #581c87;
+            --purple-950: #2f0050;
 
             --base-gap: 8px;
             --base-radius: 8px;
             --blur-amount: 5px;
             --backdrop-color: hsla(0, 0, 78%, 0.1);
 
-            --text-color-1: var(--froggo-950);
-            --text-color-2: var(--froggo-900);
+            --text-color-1: var(--purple-950);
+            --text-color-2: var(--purple-900);
+            --outline-color: #000;
 
             /* Dialog */
-            --dialog-bg-color: var(--froggo-50);
-            --dialog-border-color: var(--froggo-500);
+            --dialog-bg-color: var(--purple-50);
+            --dialog-border-color: var(--purple-500);
             /* Themes Wrapper */
-            --themes-border-color: var(--froggo-400);
+            --themes-border-color: var(--purple-400);
             /* Radio Buttons */
-            --circle-bg-color: var(--froggo-100);
-            --circle-bg-color-checked: var(--froggo-300);
-            --circle-border-color: var(--froggo-500);
+            --circle-bg-color: var(--purple-100);
+            --circle-bg-color-checked: var(--purple-300);
+            --circle-border-color: var(--purple-500);
             /* Control elements */
-            --control-color: var(--froggo-400);
-            --control-interaction-color: var(--froggo-500);
+            --control-color: var(--purple-300);
+            --control-interaction-color: var(--purple-400);
+            /* Checkbox */
+            --checkbox-bg-color: var(--purple-50);
+            --checkbox-bg-color-checked: var(--purple-200);
+            --checkmark-color: var(--purple-900);
+            --checkbox-border-color: var(--purple-500);
+
+            font-family: var(--font-fam, sans-serif);
         }
 
         ::slotted(h2) {
@@ -203,7 +197,6 @@ export class ThemeSwitch extends LitElement {
         label {
             color: var(--text-color-1);
             cursor: pointer;
-            text-transform: capitalize;
         }
 
         .themes {
@@ -223,6 +216,8 @@ export class ThemeSwitch extends LitElement {
 
             border-radius: var(--base-radius);
             padding: calc(var(--base-gap) / 2);
+
+            text-transform: capitalize;
         }
 
         .circle-wrapper {
@@ -278,7 +273,7 @@ export class ThemeSwitch extends LitElement {
             background-color: var(--circle-bg-color-checked);
         }
 
-        .save {
+        .save-settings {
             display: flex;
             align-items: center;
             justify-content: center;
@@ -307,6 +302,54 @@ export class ThemeSwitch extends LitElement {
             width: 80%;
 
             text-transform: capitalize;
+        }
+
+        input[type='checkbox'] {
+            position: absolute !important;
+            height: 1px;
+            width: 1px;
+            overflow: hidden;
+            clip: rect(1px 1px 1px 1px); /* IE6, IE7 */
+            clip: rect(1px, 1px, 1px, 1px);
+        }
+
+        input[type='checkbox'] + label {
+            display: grid;
+            align-items: center;
+            gap: var(--base-gap);
+            grid-template-areas: 'checkbox-cell label';
+            grid-template-columns: auto 1fr;
+        }
+
+        input[type='checkbox'] + label:before {
+            content: '';
+            grid-area: checkbox-cell;
+            border-radius: 2px;
+            border: 1px solid var(--checkbox-border-color);
+            width: 20px;
+            height: 20px;
+            background: var(--checkbox-bg-color);
+        }
+
+        input[type='checkbox']:checked + label:before {
+            background: var(--checkbox-bg-color-checked);
+        }
+
+        input[type='checkbox']:checked + label::after {
+            content: '';
+            border-left: 2px solid var(--checkmark-color);
+            border-bottom: 2px solid var(--checkmark-color);
+            height: 5px;
+            width: 12px;
+            transform: rotate(-45deg);
+            position: relative;
+            left: 4px;
+            grid-area: checkbox-cell;
+            top: -2px;
+        }
+
+        input[type='checkbox']:focus + label::before {
+            outline: var(--outline-color) solid 1px;
         }
 
         @media (prefers-reduced-motion: no-preference) {
@@ -592,7 +635,7 @@ export class ThemeSwitch extends LitElement {
                         })}
                     </div>
 
-                    <div class="save">
+                    <div class="save-settings">
                         <div>
                             <input
                                 ?checked=${this.saveSelection}
