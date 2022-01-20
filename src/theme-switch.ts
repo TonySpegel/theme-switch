@@ -1,17 +1,7 @@
 /**
  * <theme-switch> is a web component which enables
- * users to switch between themes they have defined.
- *
- * Features:
- * - [x] Config trough attributes `<theme-switch arr='["auto", "light"]'></theme-switch>`
- * - [x] Keyboard navigation for custom radio buttons
- * - [x] Keyboard handling for the dialog
- *     - [x] close dialog using the 'escape' key
- *     - [x] re-focus the element which has opened the dialog after closing it again
- *     - [x] trapping focus inside the dialog
- * - [x] Saving the selected theme to localStorage
- * - [x] Reading the selected from localStorage
- *
+ * users to switch between themes.
+ * 
  * Copyright © 2021 Tony Spegel
  */
 
@@ -365,7 +355,7 @@ export class ThemeSwitch extends LitElement {
      */
     // Used to toggle the dialog's visibility
     @state()
-    private dialogHidden = false;
+    private dialogHidden = true;
     // Represents radio buttons to select a theme
     @state()
     private themes: themeStateInterface[] = [];
