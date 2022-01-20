@@ -670,7 +670,7 @@ export class ThemeSwitch extends LitElement {
                         id="btn-close-dialog"
                         title="Dialog schließen"
                     >
-                        Schließen
+                        <slot name="close-caption"></slot>
                     </button>
                 </div>
                 <div
