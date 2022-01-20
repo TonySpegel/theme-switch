@@ -1,9 +1,9 @@
-# &lt;theme-switch> a web component build with Lit 🔥
+# `<theme-switch>` a modal dialog web component 
 Switch your theme with style
 
 ## About
 `<theme-switch>` is a modal dialog which enables users to switch between themes. 
-It is build as a web compoment with [Lit](https://lit.dev/) by using this [this starter project](https://github.com/lit/lit-element-starter-ts).
+It is build as a web compoment with [Lit](https://lit.dev/) 🔥 by using this [this starter project](https://github.com/lit/lit-element-starter-ts).
 
 ### Features
 - Configurable UI
@@ -18,28 +18,31 @@ npm i theme-switch-component
 ```
 
 ## Configuration
-You can configure `<theme-switch>` by using the `availableThemes` property, three [slots](#slots) and some [CSS variables](#css-variables). Its [events](#events) are this components way of communication.
+You can configure `<theme-switch>` by using the `availableThemes` attribute, [slots](#slots) and some [CSS variables](#css-variables). Its [events](#events) are this components way of communication.
 
-### Property `availableThemes` 
+### Attribute `availableThemes` 
 
 | Name             | Required | Values                                           | Default                                                                                                                                                                                                                          | Description                                                                           |
 |------------------|----------|--------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------|
 | `availableThemes` | No       | Any string or emoji.<br>"light", "🐸" | `"auto"`, `"light"`, `"dark"`<br><br>`auto`: use the current OS theme which is either a light or dark theme<br>`light`: usually light and friendly colors<br>`dark`: darker and more comfy shades to reduce eye strain (or to be cool) | These values<br>will be communicated<br>to anyone who listens <br>to the [ThemeEvent](#themeevent) |
 
-<!-- // TODO -->
-- Manage settings via `localStorage`
-  - `save-selection`: `true` or `false`
-  - `theme-preference`: a string value of the theme which is saved (e. g. `frog-green-theme`) 
+A selected theme can be saved if the corresponding setting has been set - the default is not setting anything.
+If you do decide to save the selected theme, two keys are set in your `localStorage`:
+- `save-selection`: `true` or `false`
+- `theme-preference`: a string value of the theme which is saved (e. g. `frog-green-theme`)
+
+You can delete these by unchecking the option or by hand.
 
 ### Slots
 
 Slots allow you to define placeholders in your template that can be filled with any markup fragment you want when the element is used in the markup. They are identified by their name attribute. These placeholder are meant to be used to display a heading, a sub-heading and a _"read more"_ link but you could place anything you would like to.
 
-| Name          | Meaning                   | Example value                                                 |
-|---------------|---------------------------|---------------------------------------------------------------|
-| `heading`     | The "title" of the dialog |`<h2 slot="heading">Theme Selection</h2>`                      |
-| `sub-heading` | Short explanation         |`<span slot="sub-heading">Choose a theme for your site</span>` |
-| `read-more`   | Additional information    |`<a slot="read-more" href="/privacy-statement" target="_blank" title="What data will be saved?">?</a>` |
+| Name            | Meaning                   | Example value                                                 |
+|-----------------|---------------------------|---------------------------------------------------------------|
+| `heading`       | The "title" of the dialog |`<h2 slot="heading">Theme Selection</h2>`                      |
+| `sub-heading`   | Short explanation         |`<span slot="sub-heading">Choose a theme for your site</span>` |
+| `read-more`     | Additional information    |`<a slot="read-more" href="/privacy-statement" target="_blank" title="What data will be saved?">?</a>` |
+| `close-caption` | Close button caption      |`<span slot="close-caption">Schließen</span>`                  |
 
 #### Slot  Examples
 Using the default values
@@ -56,6 +59,7 @@ Using the default values
   >
     ? 
   </a>
+  <span slot="close-caption">Close</span>
 </theme-switch>
 ```
 Using your own set of themes
@@ -128,14 +132,16 @@ window.addEventListener('theme-event', (themeEvent) => {
 | `--checkbox-border-color`    | Checkbox border color                        | `--purple-500`: `#a855f7`|
 | `--checkmark-color`          | Checkmark color                              | `--purple-900`: `#581c87`|
 
-## Defining themes
+The default set of colors comes from [Tailwind's color palettes](https://tailwindcss.com/docs/customizing-colors).
 
-The overall styling is based on this awesome article ([Building a color scheme
-](https://web.dev/building-a-color-scheme/)) by [Adam Argyle](https://web.dev/authors/adamargyle/).
-The basic idea is that you have to define a set of css variables for different kinds of surfaces,
+### Customizing the UI using CSS variables
+
+The overall styling of my personal [website](http://tony-spegel.com/) and this component is based on 
+this awesome article ([Building a color scheme](https://web.dev/building-a-color-scheme/)) by [Adam Argyle](https://web.dev/authors/adamargyle/).
+The basic idea is that you have to define a set of CSS variables for different kinds of surfaces,
 colors and shadows and swap them with another set when a condition is met. This could be your device changing its theme or you using this component.
 
-1. Define a set of css variables for each theme:
+1. Define a set of CSS variables for each theme:
 ```css
 * {
   /* Light theme */
@@ -146,8 +152,10 @@ colors and shadows and swap them with another set when a condition is met. This 
   --surface-2-dark: hsla(281deg 60% 15% / 100%);
 }
 ```
-2. Then define a set of css variables for your UI and its default state (this is usually the light theme).
-Using an attribute selector like I did is one way when changing the theme programmatically but you are free to use a class instead - see [`ThemeEvent`](#themeevent) for more details.
+
+2. Then define a set of CSS variables for your UI and its default state (this could be your light theme).
+Using an attribute selector like I did is one way when changing the theme but you are free to use a class
+instead - see [`ThemeEvent`](#themeevent) for more details.
 
 ```css
 :root,
@@ -168,12 +176,52 @@ Using an attribute selector like I did is one way when changing the theme progra
 }
 /* ^ a media query for a light color scheme is not needed as it is the default already */
 
-:root[color-mode='dark'] {
+:root[theme-preference='dark'] {
   color-scheme: dark;
   --surface-1: var(--surface-1-dark);
   --surface-2: var(--surface-2-dark);
 }
 ```
+4. Apply these variables to this component if you'd like to
+```css
+:root[theme-preference='dark'] theme-switch {
+  --text-color-1: #fff;
+  --text-color-2: #fff;
+  /* Dialog */
+  --dialog-bg-color: var(--surface-5);
+  --dialog-border-color: var(--surface-2);
+  /* Radio Buttons */
+  --circle-bg-color: #2a1d5445;
+  --circle-bg-color-checked: var(--surface-3-dark);
+  --circle-border-color: #eedcf530;
+  /* Control elements */
+  --control-color: var(--surface-3);
+  --control-interaction-color: var(--surface-2);
+}
+```
+
+5. Don't forget to load a saved theme as soon as possible to avoid page flickering:
+```html
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <!-- ... -->
+    <script>
+      // Reade theme preference from localStorage
+      const themePreference = localStorage.getItem('theme-preference');
+      // Set theme if present in localStorage
+      if (themePreference !== null) {
+        document
+          .querySelector('html')
+          .setAttribute('theme-preference', themePreference);
+      }
+    </script>
+  </head>
+  <!-- ... -->
+</html>
+```
+
 
 ## Setup
 
