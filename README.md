@@ -1,7 +1,7 @@
 # `<theme-switch>` a modal dialog web component 
 Switch your themes with style
 
-![theme switch UI](theme-switch-light-dark-frog.png)
+![theme-switch-light-dark-frog](https://user-images.githubusercontent.com/1145514/150443062-d5387c99-c595-48aa-955c-49296e58c644.png)
 
 ## About
 `<theme-switch>` is a modal dialog which enables users to switch between themes. 
