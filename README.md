@@ -1,19 +1,19 @@
 # `<theme-switch>` a modal dialog web component 
-Switch your theme with style
+Switch your themes with style
+
+![theme switch UI](theme-switch-light-dark-frog.png)
 
 ## About
 `<theme-switch>` is a modal dialog which enables users to switch between themes. 
 It is build as a web compoment with [Lit](https://lit.dev/) 🔥 by using this [this starter project](https://github.com/lit/lit-element-starter-ts).
-
-![theme switch UI](theme-switch-light-dark-frog.png)
-
-https://user-images.githubusercontent.com/1145514/150435324-7df3ca6a-68d9-4d2e-a722-be903c4efc96.mp4
 
 ### Features
 - Configurable UI
 - a11y friendly keyboard navigation
 - Focus restoration
 - Event driven communication between host and component
+
+https://user-images.githubusercontent.com/1145514/150435324-7df3ca6a-68d9-4d2e-a722-be903c4efc96.mp4
 
 ## Installation
 If you would like to use this component in your project, you can install it from [npm](https://www.npmjs.com/package/theme-switch-component)
