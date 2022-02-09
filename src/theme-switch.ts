@@ -1,7 +1,7 @@
 /**
  * <theme-switch> is a web component which enables
  * users to switch between themes.
- * 
+ *
  * Copyright © 2021 Tony Spegel
  */
 
@@ -14,7 +14,13 @@
 import {LitElement, css, html} from 'lit';
 import {DialogEvent} from './DialogEvent';
 import {ThemeEvent} from './ThemeEvent';
-import {customElement, property, queryAll, state} from 'lit/decorators.js';
+import {
+    customElement,
+    eventOptions,
+    property,
+    queryAll,
+    state,
+} from 'lit/decorators.js';
 
 interface themeStateInterface {
     name: string;
@@ -542,6 +548,9 @@ export class ThemeSwitch extends LitElement {
         nodes[index].focus();
     }
 
+    @eventOptions({})
+    close() {}
+
     override render() {
         return html`
             <div
@@ -553,7 +562,19 @@ export class ThemeSwitch extends LitElement {
                     this.focusElement(el, index);
                 }}"
             ></div>
-            <div aria-hidden="${this.dialogHidden}" id="dialog-backdrop">
+            <div
+                @click="${(e: MouseEvent) => {
+                    const {id} = e.target as HTMLElement;
+                    
+                    if (id !== 'dialog-backdrop') {
+                        return;
+                    }
+                    
+                    this.closeDialog();
+                }}"
+                aria-hidden="${this.dialogHidden}"
+                id="dialog-backdrop"
+            >
                 <div
                     @keydown="${(event: KeyboardEvent) => {
                         if (event.key === 'Escape') {
